@@ -8,7 +8,7 @@ import MicIcon from '@material-ui/icons/Mic';
 
 interface ControlsProps {
     onMicEvent: (e: boolean) => void
-    onStreamEvent: () => void
+    onStreamEvent: (e: MediaStream) => void
 }
 
 const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent }) => {
@@ -29,6 +29,8 @@ const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent }) => {
             video: true,
             audio: false
         });
+
+        onStreamEvent(stream);
     }
 
     const handleWebcam = async () => {
@@ -38,7 +40,7 @@ const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent }) => {
             audio: true
         });
 
-        console.log(stream)
+        onStreamEvent(stream);
 
     }
 
