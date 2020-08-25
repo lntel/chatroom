@@ -1,0 +1,15 @@
+.videolist {
+    grid-column: 4 / 13;
+    grid-row: 1 / 11;
+    padding: .5em;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: .5em;
+
+    &__video {
+        background: #000;
+        border-radius: .2em;
+    }
+}
