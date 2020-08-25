@@ -1,10 +1,6 @@
 import React, { useState } from 'react'
+import { User } from '../../types';
 import './index.scss'
-
-interface User {
-    nickname: string
-    peerId: string
-}
 
 const Userlist = () => {
     const [users, setUsers] = useState<User[]>([
