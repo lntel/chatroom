@@ -1,0 +1,68 @@
+@import '../../global';
+
+.controls {
+    grid-row: 11 / 13;
+    grid-column: 4 / 13;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+
+    button {
+        border: 0;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background .3s ease-in-out;
+
+        svg {
+            color: $white;
+        }
+    }
+
+    &__microphone {
+        &--muted {
+            background: #fa5a5a;
+
+            &:hover {
+                background: #b64141;
+            }
+        }
+
+        &--unmuted {
+            background: $brand;
+
+            &:hover {
+                background: #3d6eaa;
+            }
+        }
+    }
+
+    &__camera {
+        background: $brand;
+
+        &:hover {
+            background: #3d6eaa;
+        }
+
+        svg {
+            font-size: 1.8rem;
+            color: $white;
+        }
+    }
+
+    &__screenshare {
+        background: $brand;
+
+        &:hover {
+            background: #3d6eaa;
+        }
+
+        svg {
+            font-size: 1.8rem;
+            color: $white;
+        }
+    }
+}
