@@ -1,0 +1,33 @@
+@import '../../global';
+
+.userlist {
+    background: $darker;
+    grid-column: 1 / 4;
+    grid-row: 1 / 13;
+    display: flex;
+    flex-direction: column;
+
+    &__title {
+        font-weight: 400;
+        padding: 1em;
+        color: $base;
+    }
+
+    &__users {
+        flex: 1;
+        overflow: auto;
+    }
+
+    &__user {
+        background: $dark;
+        padding: 1.7em;
+        margin: 0 0 7px 0;
+        color: $white;
+        cursor: pointer;
+        transition: filter .3s ease-in-out;
+
+        &:hover {
+            filter: brightness(115%);
+        }
+    }
+}
