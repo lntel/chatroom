@@ -69,6 +69,9 @@ class Chat {
      * @param {Socket} client Client socket
      */
     handleConnection(client: Client) {
+
+        console.log(`${client.id} connected`);
+
         setTimeout(() => {
             if(!client.nickname && !client.peerId) {
                 client.disconnect();
