@@ -1,18 +1,19 @@
-import React from 'react'
+import React, { FC } from 'react'
+import { UserStream } from '../../types'
+import Video from '../Video'
 import './index.scss'
 
-const Videolist = () => {
+interface VideolistProps {
+    streams: UserStream[]
+    onStreamEnded: (id: string) => void
+}
+
+const Videolist: FC<VideolistProps> = ({ streams, onStreamEnded }) => {
     return (
         <div className="videolist">
-            <div className="videolist__video"></div>
-            <div className="videolist__video"></div>
-            <div className="videolist__video"></div>
-            <div className="videolist__video"></div>
-            <div className="videolist__video"></div>
-            <div className="videolist__video"></div>
-            <div className="videolist__video"></div>
-            <div className="videolist__video"></div>
-            <div className="videolist__video"></div>
+            { streams && streams.length ? streams.map(stream => 
+                <Video user={stream.user} stream={stream.stream} onStreamEnded={(id: string) => onStreamEnded(id)} key={stream.user.peerId} />
+            ) : null }
         </div>
     )
 }
