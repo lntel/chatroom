@@ -1,0 +1,39 @@
+.fade-transition {
+    &-enter {
+        opacity: 0;
+    }
+
+    &-enter-active {
+        opacity: 1;
+        transition: opacity .3s ease-in;
+    }
+
+    &-exit {
+        opacity: 1;
+    }
+
+    &-exit-active {
+        opacity: 0;
+        transition: opacity .3s ease-out;
+    }
+}
+
+.slide-transition {
+    &-enter {
+        transform: translateX(100vw);
+    }
+
+    &-enter-active {
+        transform: translateX(0);
+        transition: transform .3s ease-in;
+    }
+
+    &-exit {
+        transform: translateX(0);
+    }
+
+    &-exit-active {
+        transform: translateX(100vw);
+        transition: transform .3s ease-out;
+    }
+}
