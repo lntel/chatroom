@@ -15,9 +15,10 @@ interface TextboxProps {
     padding?: string | number
     margin?: string | number
     onChange?: (v: string) => void
+    onEnter?: () => void
 }
 
-const Textbox: FC<TextboxProps> = ({ type = 'text', onChange, value, fgColor, bgColor, padding, margin, placeholder, className }) => {
+const Textbox: FC<TextboxProps> = ({ type = 'text', onChange, value, fgColor, bgColor, padding, margin, placeholder, className, onEnter }) => {
     const [internalValue, setInternalValue] = useState<string>('');
 
     const style: CSSProperties = {
@@ -39,8 +40,15 @@ const Textbox: FC<TextboxProps> = ({ type = 'text', onChange, value, fgColor, bg
         }
     }
 
+    const handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if(e.key === 'Enter' && onEnter && onChange) {
+            onChange('');
+            onEnter();
+        }
+    }
+
     return (
-        <input type={type} onChange={e => handleChange(e)} value={onChange ? value : internalValue} style={style} className={className} placeholder={placeholder} />
+        <input type={type} onChange={e => handleChange(e)} value={onChange ? value : internalValue} style={style} className={className} placeholder={placeholder} onKeyUp={e => handleKeydown(e)} />
     )
 }
 
