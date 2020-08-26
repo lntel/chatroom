@@ -1,4 +1,4 @@
-import { Entity, Column, BaseEntity, PrimaryGeneratedColumn } from'typeorm'
+import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn } from'typeorm'
 import { Field, ObjectType } from'type-graphql'
 import User from './user';
 
@@ -24,6 +24,6 @@ export default class Chat extends BaseEntity {
 
     // Timestamp field
     @Field()
-    @PrimaryGeneratedColumn()
+    @CreateDateColumn()
     postedDate: number;
 }
