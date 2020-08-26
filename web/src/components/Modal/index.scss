@@ -1,0 +1,49 @@
+@import '../../global';
+
+.modal-container {
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(58, 58, 58, 0.486);
+    backdrop-filter: blur(7px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__modal {
+        background: $darker;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
+        border-radius: .2em;
+        padding: 1.3em;
+        max-width: 30%;
+        max-height: 60%;
+        overflow: auto;
+        color: $base;
+
+        &::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        &::-webkit-scrollbar-track {
+            width: 7px;
+            border-radius: 0 .2em .2em 0;
+            background: $dark;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: $base;
+            border-radius: .2em;
+        }
+
+        &__title {
+            font-weight: 400;
+            font-size: 1.7rem;
+            color: $brand;
+            margin: 0 0 .5em 0;
+        }
+    }
+}
