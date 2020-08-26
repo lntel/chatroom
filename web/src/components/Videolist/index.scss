@@ -3,14 +3,23 @@
 .videolist {
     width: calc(100% - 1em);
     height: 100%;
-    grid-column: 4 / 13;
+    grid-column: 1 / 13;
     grid-row: 1 / 11;
     padding: .5em;
 
     display: grid;
-    grid-template-columns: repeat(2, 50%);
-    grid-template-rows: repeat(2, 50%);
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
     grid-gap: .5em;
+
+    &--2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    &--3 {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+    }
 
     &__video {
         width: 100%;
