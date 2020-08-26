@@ -7,7 +7,7 @@ import Modal from '../../components/Modal'
 import Textbox from '../../components/Textbox'
 import Userlist from '../../components/Userlist'
 import Videolist from '../../components/Videolist'
-import { UserStream, ClientEvents, User } from '../../types'
+import { UserStream, ClientEvents, User, ChatMessage } from '../../types'
 import './index.scss'
 
 const Main = () => {
@@ -18,6 +18,7 @@ const Main = () => {
     const [peer, setPeer] = useState<Peer | null>(null);
     const [users, setUsers] = useState<User[]>([]);
     const [chatVisible, setChatVisible] = useState<boolean>(false);
+    const [messages, setMessages] = useState<ChatMessage[]>([]);
 
     useEffect(() => {
         console.log(users);
@@ -51,6 +52,13 @@ const Main = () => {
             setUsers(oldUsers => [
                 ...oldUsers,
                 ...clients
+            ]);
+        });
+
+        client.on(ClientEvents.sendMessage, (message: ChatMessage) => {
+            setMessages(oldMessages => [
+                ...oldMessages,
+                message
             ]);
         });
 
@@ -93,11 +101,15 @@ const Main = () => {
         setModalVisible(false);
     }
 
+    const handleMessageSend = (content: string) => {
+        socket?.emit(ClientEvents.sendMessage, content);
+    }
+
     return (
         <div className="main-page">
             <Userlist users={users} />
             <Videolist streams={streams} onStreamEnded={(id: string) => handleStreamEnded(id)} />
-            <Chat visible={chatVisible} />
+            <Chat visible={chatVisible} messages={messages} onMessage={(content: string) => handleMessageSend(content)} />
             <Controls onMicEvent={(e: boolean) => handleMicEvent(e)} onStreamEvent={(e) => handleStreamEvent(e)} onChat={() => setChatVisible(!chatVisible)} />
             <Modal title="Please enter a nickname" visible={modalVisible}>
                 <Textbox 
