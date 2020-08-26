@@ -12,6 +12,21 @@
     display: flex;
     flex-direction: column;
 
+    &__message {
+        background: $dark;
+        border-radius: .2em;
+        margin: 0 0 1em 0;
+        padding: 1em;
+
+        &__nickname {
+            color: $brand;
+        }
+
+        p {
+            color: $white;
+        }
+    }
+
     &__container {
         flex: 1;
         padding: 1em;
