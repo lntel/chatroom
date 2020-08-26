@@ -17,6 +17,7 @@ const Main = () => {
     const [socket, setSocket] = useState<typeof Socket | null>(null);
     const [peer, setPeer] = useState<Peer | null>(null);
     const [users, setUsers] = useState<User[]>([]);
+    const [userlistVisible, setUserlistVisible] = useState<boolean>(false);
     const [chatVisible, setChatVisible] = useState<boolean>(false);
     const [messages, setMessages] = useState<ChatMessage[]>([]);
 
@@ -107,10 +108,25 @@ const Main = () => {
 
     return (
         <div className="main-page">
-            <Userlist users={users} />
-            <Videolist streams={streams} onStreamEnded={(id: string) => handleStreamEnded(id)} />
-            <Chat visible={chatVisible} messages={messages} onMessage={(content: string) => handleMessageSend(content)} />
-            <Controls onMicEvent={(e: boolean) => handleMicEvent(e)} onStreamEvent={(e) => handleStreamEvent(e)} onChat={() => setChatVisible(!chatVisible)} />
+            <Userlist 
+            users={users} 
+            visible={userlistVisible} 
+            />
+            <Videolist 
+            streams={streams} 
+            onStreamEnded={(id: string) => handleStreamEnded(id)} 
+            />
+            <Chat 
+            visible={chatVisible} 
+            messages={messages} 
+            onMessage={(content: string) => handleMessageSend(content)} 
+            />
+            <Controls 
+            onMicEvent={(e: boolean) => handleMicEvent(e)} 
+            onStreamEvent={(e) => handleStreamEvent(e)} 
+            onChat={() => setChatVisible(!chatVisible)} 
+            onUserlist={() => setUserlistVisible(!userlistVisible)} 
+            />
             <Modal title="Please enter a nickname" visible={modalVisible}>
                 <Textbox 
                 onChange={(e: string) => setNickname(e)} 
