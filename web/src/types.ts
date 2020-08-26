@@ -12,6 +12,7 @@ export interface UserStream {
 export interface ChatMessage {
     id: string
     content: string
+    system: boolean
     user: User
     postedDate: number | string | Date
 }
