@@ -1,0 +1,24 @@
+@import '../../global';
+
+.chat {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30%;
+    height: 100%;
+    backdrop-filter: blur(7px);
+    background: #404552c0;
+
+    display: flex;
+    flex-direction: column;
+
+    &__container {
+        flex: 1;
+        padding: 1em;
+        overflow: auto;
+    }
+
+    &__input {
+        background: #000;
+    }
+}
