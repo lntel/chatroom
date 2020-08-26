@@ -57,6 +57,9 @@ const Main = () => {
         });
 
         client.on(ClientEvents.sendMessage, (message: ChatMessage) => {
+
+            if(message.user.nickname === nickname) message.user.self = true;
+
             setMessages(oldMessages => [
                 ...oldMessages,
                 message
