@@ -18,7 +18,7 @@
     }
 }
 
-.slide-transition {
+.slide-right-transition {
     &-enter {
         transform: translateX(100vw);
     }
@@ -34,6 +34,26 @@
 
     &-exit-active {
         transform: translateX(100vw);
+        transition: transform .3s ease-out;
+    }
+}
+
+.slide-left-transition {
+    &-enter {
+        transform: translateX(-100vw);
+    }
+
+    &-enter-active {
+        transform: translateX(0);
+        transition: transform .3s ease-in;
+    }
+
+    &-exit {
+        transform: translateX(0);
+    }
+
+    &-exit-active {
+        transform: translateX(-100vw);
         transition: transform .3s ease-out;
     }
 }
