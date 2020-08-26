@@ -8,4 +8,24 @@
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: repeat(12, 1fr);
+
+    &__nickname-input {
+        width: 100%;
+    }
+
+    &__set-nickname {
+        width: 100%;
+        border: 0;
+        padding: 1.5em;
+        border-radius: .2em;
+        color: $darkest;
+        font-weight: 600;
+        background: $brand;
+        cursor: pointer;
+        transition: filter .3s ease-in-out;
+
+        &:hover {
+            filter: brightness(115%);
+        }
+    }
 }
