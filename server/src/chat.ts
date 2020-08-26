@@ -111,10 +111,14 @@ class Chat {
         });
 
         client.on(ClientEvents.sendMessage, (message: string) => {
+
+            if(!message.match(/^[ -~]+$/g)) return;
+
             this.server.emit(ClientEvents.sendMessage, {
                 content: message,
                 user: user,
-                postedDate: new Date()
+                postedDate: new Date(),
+                system: false
             })
         });
 
