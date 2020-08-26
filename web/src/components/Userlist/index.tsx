@@ -1,18 +1,22 @@
-import React, { useState } from 'react'
+import React, { FC, useState } from 'react'
 import { User } from '../../types';
 import './index.scss'
 
-const Userlist = () => {
-    const [users, setUsers] = useState<User[]>([
-        {
-            nickname: 'Joe',
-            peerId: 'fdkjfkdos'
-        },
-        {
-            nickname: 'Steve',
-            peerId: 'dhsjfkdsjf'
-        }
-    ]);
+interface UserlistProps {
+    users?: User[]
+}
+
+const Userlist: FC<UserlistProps> = ({ users }) => {
+    // const [users, setUsers] = useState<User[]>([
+    //     {
+    //         nickname: 'Joe',
+    //         peerId: 'fdkjfkdos'
+    //     },
+    //     {
+    //         nickname: 'Steve',
+    //         peerId: 'dhsjfkdsjf'
+    //     }
+    // ]);
 
     return (
         <div className="userlist">
@@ -21,7 +25,7 @@ const Userlist = () => {
             </h1>
             <div className="userlist__users">
                 { users && users.length ? users.map(user =>
-                    <div className="userlist__user">
+                    <div className="userlist__user" key={user.peerId}>
                         { user.nickname }
                     </div>
                 ) : null }
