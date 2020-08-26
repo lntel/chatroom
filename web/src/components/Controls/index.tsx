@@ -4,14 +4,16 @@ import './index.scss'
 import ScreenShareIcon from '@material-ui/icons/ScreenShare';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import MicOffIcon from '@material-ui/icons/MicOff';
+import ChatIcon from '@material-ui/icons/Chat';
 import MicIcon from '@material-ui/icons/Mic';
 
 interface ControlsProps {
     onMicEvent: (e: boolean) => void
     onStreamEvent: (e: MediaStream) => void
+    onChat: () => void
 }
 
-const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent }) => {
+const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat }) => {
     const [muted, setMuted] = useState<boolean>(true);
 
     const handleMicChange = () => {
@@ -46,6 +48,9 @@ const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent }) => {
 
     return (
         <div className="controls">
+            <button className="controls__chat" onClick={() => onChat()}>
+                <ChatIcon>Filled</ChatIcon>
+            </button>
             <button className="controls__camera" onClick={() => handleWebcam()}>
                 <CameraAltIcon>Filled</CameraAltIcon>
             </button>

@@ -65,4 +65,17 @@
             color: $white;
         }
     }
+    
+    &__chat {
+        background: $brand;
+
+        &:hover {
+            background: #3d6eaa;
+        }
+
+        svg {
+            font-size: 1.8rem;
+            color: $white;
+        }
+    }
 }
