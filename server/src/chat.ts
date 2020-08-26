@@ -6,6 +6,9 @@ import { Client } from './types'
 enum ClientEvents {
     setNickname = 'set:nickname',
     sendMessage = 'send:message',
+    userJoined = 'user:joined',
+    userLeft = 'user:left',
+    userList = 'user:list',
     disconnect = 'disconnect'
 }
 
@@ -68,33 +71,55 @@ class Chat {
      * Handles client connections
      * @param {Socket} client Client socket
      */
-    handleConnection(client: Client) {
+    handleConnection(client: Socket) {
+
+        const user: Client = {
+            nickname: '',
+            peerId: '',
+            id: ''
+        }
 
         console.log(`${client.id} connected`);
 
+        client.emit(ClientEvents.userList, this.clients)
+
         setTimeout(() => {
-            if(!client.nickname && !client.peerId) {
+            if(!user.nickname && !user.peerId) {
                 client.disconnect();
             }
         }, 20 * 1000);
 
         client.on(ClientEvents.setNickname, (nickname: string, peerId: string) => {
-            client.nickname = nickname;
-            client.peerId = peerId;
+            user.nickname = nickname;
+            user.peerId = peerId;
+            user.id = client.id;
 
-            if(this.nicknameInUse(client.nickname)) {
+            if(this.nicknameInUse(user.nickname)) {
                 return client.disconnect();
             }
 
-            this.clients.push(client);
+            console.log(`${client.id} changed nickname to ${nickname}`)
+
+            this.clients.push(user);
+
+            this.server.emit(ClientEvents.userJoined, {
+                nickname: nickname,
+                peerId: peerId
+            });
+
+            console.log(`${this.clients.length} clients connected`)
         });
 
         client.on(ClientEvents.sendMessage, (message: string) => {
-            this.sendMessage(message, client.nickname!);
+            this.sendMessage(message, user.nickname!);
         });
 
         client.on(ClientEvents.disconnect, () => {
             const clientIndex = this.clients.findIndex(c => c.id === client.id);
+
+            if(clientIndex === -1) return;
+
+            this.server.emit(ClientEvents.userLeft, this.clients[clientIndex].nickname);
 
             this.clients.splice(clientIndex);
         });
