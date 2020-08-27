@@ -1,15 +1,19 @@
 @import '../../global';
 
 .controls {
-    grid-row: 11 / 13;
-    grid-column: 1 / 13;
+    grid-row: 1 / 13;
+    grid-column: 1 / 2;
+    background: $darker;
 
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
 
     button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         border: 0;
         width: 70px;
         height: 70px;
@@ -50,6 +54,30 @@
         svg {
             font-size: 1.8rem;
             color: $white;
+        }
+    }
+
+    &__settings {
+        background: $brand;
+
+        &:hover {
+            background: #3d6eaa;
+            animation: settingSpin 1s linear;
+        }
+
+        svg {
+            font-size: 1.8rem;
+            color: $white;
+        }
+    }
+
+    @keyframes settingSpin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
         }
     }
 
