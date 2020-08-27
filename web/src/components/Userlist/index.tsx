@@ -3,6 +3,8 @@ import { User } from '../../types';
 import { SlideInLeft, SlideInRight } from '../Transitions';
 import './index.scss'
 
+import ClearIcon from '@material-ui/icons/Clear';
+
 interface UserlistProps {
     users?: User[]
     visible: boolean
@@ -21,7 +23,7 @@ const Userlist: FC<UserlistProps> = ({ users, visible }) => {
     // ]);
 
     return (
-        <SlideInLeft state={visible}>
+        <SlideInRight state={visible}>
             <div className="userlist">
                 <h1 className="userlist__title">
                     Participants
@@ -34,7 +36,7 @@ const Userlist: FC<UserlistProps> = ({ users, visible }) => {
                     ) : null }
                 </div>
             </div>
-        </SlideInLeft>
+        </SlideInRight>
     )
 }
 
