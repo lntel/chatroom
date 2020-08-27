@@ -41,8 +41,6 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
                     ) : null }
                 </div>
                 <Textbox 
-                bgColor="#4B5162" 
-                fgColor="#f3f3f3" 
                 className="chat__input" 
                 padding="1.7em" 
                 placeholder="Enter a message" 
