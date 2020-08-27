@@ -129,6 +129,7 @@ const Main = () => {
             onStreamEvent={(e) => handleStreamEvent(e)} 
             onChat={() => setChatVisible(!chatVisible)} 
             onUserlist={() => setUserlistVisible(!userlistVisible)} 
+            userlistVisible={userlistVisible}
             />
             <Modal title="Please enter a nickname" visible={modalVisible}>
                 <Textbox 
@@ -136,8 +137,6 @@ const Main = () => {
                 value={nickname} 
                 padding="1.8em" 
                 margin="0 0 1em 0"
-                bgColor="#4B5162" 
-                fgColor="#f3f3f3" 
                 placeholder="Nickname" 
                 className="main-page__nickname-input"
                 />
