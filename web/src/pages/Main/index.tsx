@@ -134,7 +134,7 @@ const Main = () => {
             onSettings={() => setSettingsVisible(!settingsVisible)}
             userlistVisible={userlistVisible}
             />
-            <SettingsModal visible={settingsVisible} />
+            <SettingsModal visible={settingsVisible} onClose={() => setSettingsVisible(false)} />
             <Modal title="Please enter a nickname" visible={modalVisible}>
                 <Textbox 
                 onChange={(e: string) => setNickname(e)} 
