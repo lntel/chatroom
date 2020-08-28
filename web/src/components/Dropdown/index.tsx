@@ -10,10 +10,11 @@ interface DropdownOption {
 interface DropdownProps {
     margin?: number | string
     options?: DropdownOption[]
+    selected?: string
     onSelected: (v: string) => void
 }
 
-const Dropdown: FC<DropdownProps> = ({ options, margin, onSelected }) => {
+const Dropdown: FC<DropdownProps> = ({ options, margin, selected, onSelected }) => {
 
     const style: CSSProperties = {
         margin: margin
@@ -22,7 +23,7 @@ const Dropdown: FC<DropdownProps> = ({ options, margin, onSelected }) => {
     return (
         <select className="dropdown" style={style} onChange={e => onSelected(e.currentTarget.value)}>
             { options && options.length ? options.map(option => 
-                <option value={option.value}>{ option.text }</option>
+                <option value={option.value} key={option.value} selected={selected == option.value ? true : false}>{ option.text }</option>
             ) : null }
         </select>
     )
