@@ -118,7 +118,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
                             <MicIcon>Filled</MicIcon>
                             Input device
                         </p>
-                        <Dropdown onSelected={v => handleAudioInputSelection(v)} options={[...audioSources.map((source) => {
+                        <Dropdown onSelected={v => handleAudioInputSelection(v)} selected={settings.audioInput} options={[...audioSources.map((source) => {
                             return {
                                 text: source.label,
                                 value: source.deviceId
@@ -131,7 +131,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
                             <HeadsetIcon>Filled</HeadsetIcon>
                             Output device
                         </p>
-                        <Dropdown onSelected={v => handleAudioOutputSelection(v)} options={[...audioOutputSources.map((source) => {
+                        <Dropdown onSelected={v => handleAudioOutputSelection(v)} selected={settings.audioOutput} options={[...audioOutputSources.map((source) => {
                             return {
                                 text: source.label,
                                 value: source.deviceId
@@ -150,7 +150,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
                     <VideocamIcon>Filled</VideocamIcon>
                     Input device
                 </p>
-                <Dropdown margin="0 0 2em 0" onSelected={v => handleVideoSelection(v)} options={[...videoSources.map((source) => {
+                <Dropdown margin="0 0 2em 0" onSelected={v => handleVideoSelection(v)} selected={settings.videoInput} options={[...videoSources.map((source) => {
                     return {
                         text: source.label,
                         value: source.deviceId
