@@ -17,9 +17,10 @@ interface ControlsProps {
     onUserlist: () => void
     onSettings: () => void
     userlistVisible: boolean
+    chatVisible: boolean
 }
 
-const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUserlist, userlistVisible, onSettings }) => {
+const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUserlist, userlistVisible, chatVisible, onSettings }) => {
     const [muted, setMuted] = useState<boolean>(true);
 
     const handleMicChange = () => {
@@ -62,7 +63,11 @@ const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUser
                 ) }
             </button>
             <button className="controls__chat" onClick={() => onChat()}>
-                <ChatIcon>Filled</ChatIcon>
+                { !chatVisible ? (
+                    <ChatIcon>Filled</ChatIcon>
+                ) : (
+                    <ClearIcon>Filled</ClearIcon>
+                ) }
             </button>
             <button className="controls__camera" onClick={() => handleWebcam()}>
                 <CameraAltIcon>Filled</CameraAltIcon>
