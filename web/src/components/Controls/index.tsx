@@ -15,10 +15,12 @@ interface ControlsProps {
     onStreamEvent: (e: MediaStream) => void
     onChat: () => void
     onUserlist: () => void
+    onSettings: () => void
     userlistVisible: boolean
+    chatVisible: boolean
 }
 
-const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUserlist, userlistVisible }) => {
+const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUserlist, userlistVisible, chatVisible, onSettings }) => {
     const [muted, setMuted] = useState<boolean>(true);
 
     const handleMicChange = () => {
@@ -61,7 +63,11 @@ const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUser
                 ) }
             </button>
             <button className="controls__chat" onClick={() => onChat()}>
-                <ChatIcon>Filled</ChatIcon>
+                { !chatVisible ? (
+                    <ChatIcon>Filled</ChatIcon>
+                ) : (
+                    <ClearIcon>Filled</ClearIcon>
+                ) }
             </button>
             <button className="controls__camera" onClick={() => handleWebcam()}>
                 <CameraAltIcon>Filled</CameraAltIcon>
@@ -69,7 +75,7 @@ const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUser
             <button className="controls__screenshare" onClick={() => handleScreenshare()}>
                 <ScreenShareIcon>Filled</ScreenShareIcon>
             </button>
-            <button className="controls__settings" onClick={() => handleScreenshare()}>
+            <button className="controls__settings" onClick={() => onSettings()}>
                 <SettingsIcon>Filled</SettingsIcon>
             </button>
             <button className={muted ? "controls__microphone controls__microphone--muted" : "controls__microphone controls__microphone--unmuted"} onClick={() => handleMicChange()}>

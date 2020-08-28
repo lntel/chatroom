@@ -39,7 +39,7 @@
             background: $brand;
 
             &:hover {
-                background: #3d6eaa;
+                background: darken($brand, 10%);
             }
         }
     }
@@ -48,7 +48,7 @@
         background: $brand;
 
         &:hover {
-            background: #3d6eaa;
+            background: darken($brand, 10%)
         }
 
         svg {
@@ -61,7 +61,7 @@
         background: $brand;
 
         &:hover {
-            background: #3d6eaa;
+            background: darken($brand, 10%);
             animation: settingSpin 1s linear;
         }
 
@@ -85,7 +85,7 @@
         background: $brand;
 
         &:hover {
-            background: #3d6eaa;
+            background: darken($brand, 10%);
         }
 
         svg {
@@ -98,7 +98,7 @@
         background: $brand;
 
         &:hover {
-            background: #3d6eaa;
+            background: darken($brand, 10%);
         }
 
         svg {

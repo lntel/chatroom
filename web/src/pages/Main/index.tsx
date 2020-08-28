@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react'
 import io, { Socket } from 'socket.io-client'
 import Chat from '../../components/Chat'
 import Controls from '../../components/Controls'
+import Form from '../../components/Form'
 import Modal from '../../components/Modal'
+import SettingsModal from '../../components/Settings'
 import Textbox from '../../components/Textbox'
 import Userlist from '../../components/Userlist'
 import Videolist from '../../components/Videolist'
@@ -11,15 +13,16 @@ import { UserStream, ClientEvents, User, ChatMessage } from '../../types'
 import './index.scss'
 
 const Main = () => {
-    const [streams, setStreams] = useState<UserStream[]>([]);
-    const [nickname, setNickname] = useState<string>('');
-    const [modalVisible, setModalVisible] = useState<boolean>(true);
-    const [socket, setSocket] = useState<typeof Socket | null>(null);
-    const [peer, setPeer] = useState<Peer | null>(null);
-    const [users, setUsers] = useState<User[]>([]);
+    const [settingsVisible, setSettingsVisible] = useState<boolean>(false);
     const [userlistVisible, setUserlistVisible] = useState<boolean>(false);
+    const [modalVisible, setModalVisible] = useState<boolean>(true);
     const [chatVisible, setChatVisible] = useState<boolean>(false);
+    const [socket, setSocket] = useState<typeof Socket | null>(null);
+    const [streams, setStreams] = useState<UserStream[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
+    const [peer, setPeer] = useState<Peer | null>(null);
     const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [nickname, setNickname] = useState<string>('');
 
     useEffect(() => {
         console.log(users);
@@ -97,7 +100,9 @@ const Main = () => {
         ]);
     }
 
-    const handleNickname = () => {
+    const handleNickname = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
         if(nickname.length === 0 || nickname.length > 25) return;
 
         socket?.emit(ClientEvents.setNickname, nickname, peer?.id);
@@ -129,20 +134,25 @@ const Main = () => {
             onStreamEvent={(e) => handleStreamEvent(e)} 
             onChat={() => setChatVisible(!chatVisible)} 
             onUserlist={() => setUserlistVisible(!userlistVisible)} 
+            onSettings={() => setSettingsVisible(!settingsVisible)}
             userlistVisible={userlistVisible}
+            chatVisible={chatVisible}
             />
+            <SettingsModal visible={settingsVisible} onClose={() => setSettingsVisible(false)} />
             <Modal title="Please enter a nickname" visible={modalVisible}>
-                <Textbox 
-                onChange={(e: string) => setNickname(e)} 
-                value={nickname} 
-                padding="1.8em" 
-                margin="0 0 1em 0"
-                placeholder="Nickname" 
-                className="main-page__nickname-input"
-                />
-                <button className="main-page__set-nickname" onClick={() => handleNickname()}>
-                    Set Nickname
-                </button>
+                <Form onSubmit={e => handleNickname(e)}>
+                    <Textbox 
+                    onChange={(e: string) => setNickname(e)} 
+                    value={nickname} 
+                    padding="1.8em" 
+                    margin="0 0 1em 0"
+                    placeholder="Nickname" 
+                    className="main-page__nickname-input"
+                    />
+                    <button className="main-page__set-nickname">
+                        Set Nickname
+                    </button>
+                </Form>
             </Modal>
         </div>
     )
