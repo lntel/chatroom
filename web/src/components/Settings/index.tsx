@@ -1,8 +1,14 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useReducer, useState } from 'react'
 import './index.scss'
 
 import Modal from '../Modal'
 import Dropdown from '../Dropdown';
+
+import MicIcon from '@material-ui/icons/Mic';
+import HeadsetIcon from '@material-ui/icons/Headset';
+import VideocamIcon from '@material-ui/icons/Videocam';
+
+import { settingsReducer } from '../../reducers/settings';
 
 interface SettingsModalProps {
     visible: boolean
@@ -12,6 +18,17 @@ interface SettingsModalProps {
 const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
     const [videoSources, setVideoSources] = useState<MediaDeviceInfo[]>([]);
     const [audioSources, setAudioSources] = useState<MediaDeviceInfo[]>([]);
+    const [audioOutputSources, setAudioOutputSources] = useState<MediaDeviceInfo[]>([]);
+
+    const [settings, settingsDispatch] = useReducer(settingsReducer, {}, () => {
+        const result = localStorage.getItem('mediaSettings');
+
+        return result ? JSON.parse(result) : {};
+    });
+
+    useEffect(() => {
+        localStorage.setItem('mediaSettings', JSON.stringify(settings));
+    }, [settings]);
 
     useEffect(() => {
         requestDevicePermission();
@@ -19,7 +36,44 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
         init();
     }, []);
 
+    useEffect(() => {
+        if(visible) {
+            init();
+        }
+    }, [visible]);
+
+    const handleVideoSelection = (deviceId: string) => {
+
+        console.log(deviceId)
+
+        settingsDispatch({
+            type: 'UPDATE_VIDEO_INPUT',
+            deviceId: deviceId
+        });
+    }
+
+    const handleAudioOutputSelection = (deviceId: string) => {
+
+        console.log(deviceId)
+
+        settingsDispatch({
+            type: 'UPDATE_AUDIO_OUTPUT',
+            deviceId: deviceId
+        });
+    }
+
+    const handleAudioInputSelection = (deviceId: string) => {
+
+        console.log(deviceId)
+
+        settingsDispatch({
+            type: 'UPDATE_AUDIO_INPUT',
+            deviceId: deviceId
+        });
+    }
+
     const init = async () => {
+        setAudioOutputSources(await getDevices('audiooutput'));
         setAudioSources(await getDevices('audioinput'));
         setVideoSources(await getDevices('videoinput'));
     }
@@ -53,19 +107,50 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
                     Here you can change which device is used by default when broadcasting. We offer customisation for both audio and video.
                 </p>
                 <h2 className="settings-modal__header">
-                    Voice Settings
+                    Audio Settings
                 </h2>
-                <Dropdown margin="0 0 1em 0" options={[...audioSources.map((source) => {
-                    return {
-                        text: source.label,
-                        value: source.deviceId
-                    }
-                })]} 
-                />
+                <p className="settings-modal__audio-description">
+                    You can configure your audio settings here which includes both your input and output device devices.
+                </p>
+                <div className="settings-modal__audio">
+                    <div className="settings-modal__audio__type">
+                        <p className="settings-modal__audio__title">
+                            <MicIcon>Filled</MicIcon>
+                            Input device
+                        </p>
+                        <Dropdown onSelected={v => handleAudioInputSelection(v)} options={[...audioSources.map((source) => {
+                            return {
+                                text: source.label,
+                                value: source.deviceId
+                            }
+                        })]} 
+                        />
+                    </div>
+                    <div className="settings-modal__audio__type">
+                        <p className="settings-modal__audio__title">
+                            <HeadsetIcon>Filled</HeadsetIcon>
+                            Output device
+                        </p>
+                        <Dropdown onSelected={v => handleAudioOutputSelection(v)} options={[...audioOutputSources.map((source) => {
+                            return {
+                                text: source.label,
+                                value: source.deviceId
+                            }
+                        })]} 
+                        />
+                    </div>
+                </div>
                 <h2 className="settings-modal__header">
                     Video Settings
                 </h2>
-                <Dropdown margin="0 0 2em 0" options={[...videoSources.map((source) => {
+                <p className="settings-modal__video-description">
+                    Here you can customise your default video input device.
+                </p>
+                <p className="settings-modal__video__title">
+                    <VideocamIcon>Filled</VideocamIcon>
+                    Input device
+                </p>
+                <Dropdown margin="0 0 2em 0" onSelected={v => handleVideoSelection(v)} options={[...videoSources.map((source) => {
                     return {
                         text: source.label,
                         value: source.deviceId
