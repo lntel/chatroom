@@ -16,8 +16,8 @@ import ReconnectModal from '../../components/ReconnectModal'
 const Main = () => {
     const [settingsVisible, setSettingsVisible] = useState<boolean>(false);
     const [userlistVisible, setUserlistVisible] = useState<boolean>(false);
-    const [modalVisible, setModalVisible] = useState<boolean>(true);
-    const [reconnectVisible, setReconnectVisible] = useState<boolean>(true);
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [reconnectVisible, setReconnectVisible] = useState<boolean>(false);
     const [chatVisible, setChatVisible] = useState<boolean>(false);
     const [socket, setSocket] = useState<typeof Socket | null>(null);
     const [streams, setStreams] = useState<UserStream[]>([]);
@@ -36,6 +36,10 @@ const Main = () => {
 
         setPeer(peer);
         setSocket(client);
+
+        client.on('connect', () => {
+            setModalVisible(true);
+        });
 
         client.on(ClientEvents.userJoined, (client: User) => {
 
@@ -72,7 +76,8 @@ const Main = () => {
         });
 
         client.on('disconnect', () => {
-            console.log('dis');
+            setModalVisible(false);
+            setReconnectVisible(true);
         })
     }, []);
 
@@ -116,6 +121,12 @@ const Main = () => {
         socket?.emit(ClientEvents.sendMessage, content);
     }
 
+    const handleReconnect = () => {
+        socket?.connect();
+
+        setReconnectVisible(false);
+    }
+
     return (
         <div className="main-page">
             <Userlist 
@@ -133,6 +144,7 @@ const Main = () => {
             />
             <ReconnectModal
             visible={reconnectVisible}
+            onReconnect={() => handleReconnect()}
             />
             <Controls 
             onMicEvent={(e: boolean) => handleMicEvent(e)} 
