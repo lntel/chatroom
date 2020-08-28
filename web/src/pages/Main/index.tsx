@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import io, { Socket } from 'socket.io-client'
 import Chat from '../../components/Chat'
 import Controls from '../../components/Controls'
+import Form from '../../components/Form'
 import Modal from '../../components/Modal'
 import SettingsModal from '../../components/Settings'
 import Textbox from '../../components/Textbox'
@@ -99,7 +100,9 @@ const Main = () => {
         ]);
     }
 
-    const handleNickname = () => {
+    const handleNickname = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
         if(nickname.length === 0 || nickname.length > 25) return;
 
         socket?.emit(ClientEvents.setNickname, nickname, peer?.id);
@@ -133,20 +136,23 @@ const Main = () => {
             onUserlist={() => setUserlistVisible(!userlistVisible)} 
             onSettings={() => setSettingsVisible(!settingsVisible)}
             userlistVisible={userlistVisible}
+            chatVisible={chatVisible}
             />
             <SettingsModal visible={settingsVisible} onClose={() => setSettingsVisible(false)} />
             <Modal title="Please enter a nickname" visible={modalVisible}>
-                <Textbox 
-                onChange={(e: string) => setNickname(e)} 
-                value={nickname} 
-                padding="1.8em" 
-                margin="0 0 1em 0"
-                placeholder="Nickname" 
-                className="main-page__nickname-input"
-                />
-                <button className="main-page__set-nickname" onClick={() => handleNickname()}>
-                    Set Nickname
-                </button>
+                <Form onSubmit={e => handleNickname(e)}>
+                    <Textbox 
+                    onChange={(e: string) => setNickname(e)} 
+                    value={nickname} 
+                    padding="1.8em" 
+                    margin="0 0 1em 0"
+                    placeholder="Nickname" 
+                    className="main-page__nickname-input"
+                    />
+                    <button className="main-page__set-nickname">
+                        Set Nickname
+                    </button>
+                </Form>
             </Modal>
         </div>
     )
