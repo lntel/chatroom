@@ -11,11 +11,13 @@ import Userlist from '../../components/Userlist'
 import Videolist from '../../components/Videolist'
 import { UserStream, ClientEvents, User, ChatMessage } from '../../types'
 import './index.scss'
+import ReconnectModal from '../../components/ReconnectModal'
 
 const Main = () => {
     const [settingsVisible, setSettingsVisible] = useState<boolean>(false);
     const [userlistVisible, setUserlistVisible] = useState<boolean>(false);
     const [modalVisible, setModalVisible] = useState<boolean>(true);
+    const [reconnectVisible, setReconnectVisible] = useState<boolean>(true);
     const [chatVisible, setChatVisible] = useState<boolean>(false);
     const [socket, setSocket] = useState<typeof Socket | null>(null);
     const [streams, setStreams] = useState<UserStream[]>([]);
@@ -128,6 +130,9 @@ const Main = () => {
             visible={chatVisible} 
             messages={messages} 
             onMessage={(content: string) => handleMessageSend(content)} 
+            />
+            <ReconnectModal
+            visible={reconnectVisible}
             />
             <Controls 
             onMicEvent={(e: boolean) => handleMicEvent(e)} 
