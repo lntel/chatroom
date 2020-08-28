@@ -1,0 +1,20 @@
+@import '../../global';
+
+.reconnect-message {
+    margin: 0 0 1em 0;
+}
+
+.reconnect-button {
+    border: 0;
+    border-radius: .2em;
+    padding: 1.3em;
+    background: $brand;
+    color: $darkest;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .3s ease-in-out;
+
+    &:hover {
+        background: darken($brand, 8%);
+    }
+}
