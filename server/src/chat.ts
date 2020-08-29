@@ -135,7 +135,11 @@ class Chat {
 
             this.server.emit(ClientEvents.sendMessage, {
                 content: message,
-                user: user,
+                user: {
+                    nickname: user.nickname,
+                    peerId: user.peerId,
+                    id: user.id
+                },
                 postedDate: new Date(),
                 system: false
             })
