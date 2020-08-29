@@ -27,6 +27,32 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
     });
 
     useEffect(() => {
+        if(!settings.videoInput && videoSources.length) {
+
+            console.log(videoSources[0].deviceId)
+
+            settingsDispatch({
+                type: 'UPDATE_VIDEO_INPUT',
+                deviceId: videoSources[0].deviceId
+            });
+        }
+
+        if(!settings.audioInput && audioSources.length) {
+            settingsDispatch({
+                type: 'UPDATE_AUDIO_INPUT',
+                deviceId: audioSources[0].deviceId
+            });
+        }
+
+        if(!settings.audioOutput && audioOutputSources.length) {
+            settingsDispatch({
+                type: 'UPDATE_AUDIO_OUTPUT',
+                deviceId: audioOutputSources[0].deviceId
+            });
+        }
+    }, [videoSources, audioSources, audioOutputSources]);
+
+    useEffect(() => {
         localStorage.setItem('mediaSettings', JSON.stringify(settings));
     }, [settings]);
 
