@@ -49,6 +49,10 @@ const Main = () => {
             ]);
         });
 
+        client.on(ClientEvents.banUser, () => {
+            console.log('banned')
+        });
+
         client.on(ClientEvents.userLeft, (nickname: string) => {
 
             console.log(nickname)
@@ -131,6 +135,7 @@ const Main = () => {
         <div className="main-page">
             <Userlist 
             users={users} 
+            socket={socket}
             visible={userlistVisible} 
             />
             <Videolist 
