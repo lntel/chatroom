@@ -1,0 +1,31 @@
+@import '../../global';
+
+.user-modal {
+    background: $darkest;
+    width: 15%;
+    padding: 7px;
+    border-radius: .2em;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
+    
+    &__option {
+        padding: 1em;
+        border-radius: .2em;
+        cursor: pointer;
+        color: $light;
+        font-weight: 500;
+        transition: all .3s ease-in-out;
+
+        &:hover {
+            background: $dark;
+        }
+
+        &--serious {
+            color: #fd6c6c;
+
+            &:hover {
+                background: #fd6c6c;
+                color: $white;
+            }
+        }
+    }
+}

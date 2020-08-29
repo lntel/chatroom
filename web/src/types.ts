@@ -25,5 +25,7 @@ export enum ClientEvents {
     userJoined = 'user:joined',
     userLeft = 'user:left',
     userList = 'user:list',
-    disconnect = 'disconnect'
+    disconnect = 'disconnect',
+    disconnectUser = 'disconnect:user',
+    banUser = 'ban:user'
 }
