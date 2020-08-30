@@ -2,7 +2,8 @@
 
 .userlist {
     backdrop-filter: blur(7px);
-    background: rgba($darker, .8);
+    background: $darker;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
     width: 30%;
     height: 100%;
     position: absolute;
