@@ -65,16 +65,16 @@ const Userlist: FC<UserlistProps> = ({ users, visible, socket }) => {
     // ]);
 
     return (
+        <>
+        <UserModal 
+        visible={Boolean(selectedUser)} 
+        positionX={modalPosition.x} 
+        positionY={modalPosition.y} 
+        onUnfocus={() => setSelectedUser('')} 
+        onDisconnect={() => handleDisconnect()} 
+        onBan={() => handleBan()}
+        />
         <SlideInRight state={visible}>
-            <>
-            <UserModal 
-            visible={Boolean(selectedUser)} 
-            positionX={modalPosition.x} 
-            positionY={modalPosition.y} 
-            onUnfocus={() => setSelectedUser('')} 
-            onDisconnect={() => handleDisconnect()} 
-            onBan={() => handleBan()}
-            />
             <div className="userlist">
                 <h1 className="userlist__title">
                     Participants
@@ -90,8 +90,8 @@ const Userlist: FC<UserlistProps> = ({ users, visible, socket }) => {
                     ) : null }
                 </div>
             </div>
-            </>
         </SlideInRight>
+        </>
     )
 }
 
