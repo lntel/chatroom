@@ -23,9 +23,36 @@
 
     &__video {
         width: 100%;
-        height: 100%;
+        height: calc(100% - 1em);
         background: $darker;
         border-radius: .2em;
+        position: relative;
+
+        &:hover &__data {
+            transition: opacity .3s ease-in;
+            opacity: 1;
+        }
+
+        &__data {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            background: rgba($darker, .5);
+            transition: opacity .3s ease-out;
+
+            svg {
+                color: $white;
+                font-size: 2rem;
+                cursor: pointer;
+            }
+        }
 
         video {
             width: 100%;
