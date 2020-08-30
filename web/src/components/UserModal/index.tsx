@@ -3,6 +3,7 @@ import React, { CSSProperties, FC, useEffect, useRef } from 'react'
 import './index.scss'
 
 import { FadeIn } from '../Transitions'
+import Slider from '../Slider';
 
 interface UserModalProps {
     visible: boolean
@@ -53,6 +54,10 @@ const UserModal: FC<UserModalProps> = ({ visible, positionX, positionY, onUnfocu
                 </div>
                 <div className="user-modal__option">
                     test
+                </div>
+                <div className="user-modal__option">
+                    <p>Volume</p>
+                    <Slider min={0} max={1} step={0.01} />
                 </div>
             </div>
         </FadeIn>
