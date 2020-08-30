@@ -24,17 +24,22 @@ const UserModal: FC<UserModalProps> = ({ visible, positionX, positionY, onUnfocu
         zIndex: 2
     }
 
+    const detectUnfocus = (e: any) => {
+        const element = (e.target as HTMLDivElement);
+
+        if(!element || !element.className || !element.className.length) return;
+        
+        if(element.className.substr(0, 10) !== 'user-modal') {
+            onUnfocus();
+        }
+    }
+
     useEffect(() => {
-        document.body.addEventListener('click', (e) => {
+        document.body.addEventListener('click', detectUnfocus); 
 
-            const element = (e.target as HTMLDivElement);
-
-            if(!element || !element.className || !element.className.length) return;
-            
-            if(element.className.substr(0, 10) !== 'user-modal') {
-                onUnfocus();
-            }
-        }); 
+        return () => {
+            document.body.removeEventListener('click', detectUnfocus);
+        }
     }, []);
 
     return (
