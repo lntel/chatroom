@@ -44,6 +44,14 @@
         }
     }
 
+    &__stream-stop {
+        background: #fa5a5a;
+
+        &:hover {
+            background: #b64141;
+        }
+    }
+
     &__camera {
         background: $brand;
 
