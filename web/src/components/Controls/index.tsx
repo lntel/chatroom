@@ -66,8 +66,16 @@ const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUser
     const handleWebcam = async () => {
 
         const stream = await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true
+            video: {
+                deviceId: {
+                    exact: settings.videoInput
+                }
+            },
+            audio: {
+                deviceId: {
+                    exact: settings.audioInput
+                }
+            }
         });
 
         onStreamEvent(stream);
