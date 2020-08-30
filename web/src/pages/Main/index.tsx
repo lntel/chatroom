@@ -1,4 +1,4 @@
-import Peer from 'peerjs'
+import Peer, { MediaConnection } from 'peerjs'
 import React, { useEffect, useRef, useState } from 'react'
 import io, { Socket } from 'socket.io-client'
 import Chat from '../../components/Chat'
@@ -25,90 +25,135 @@ const Main = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [nickname, setNickname] = useState<string>('');
-    const [peerListening, setPeerListening] = useState<boolean>(false);
+    const [localStream, setLocalStream] = useState<MediaStream | null>(null);
 
     const peer = useRef<Peer>(new Peer());
 
+    const handlePeerCall = (call: MediaConnection) => {
+        try {
+            console.log(call)
+            
+            call.answer();
+
+            const userObject = users.find(user => user.peerId == call.peer)
+
+            const dupeResult = streams.find(strm => strm.user.nickname === userObject?.nickname);
+
+            if(!userObject || dupeResult) {
+                console.log("not found")
+
+                return call.close();
+            }
+
+            call.on('stream', (stream) => {
+
+
+                setStreams(oldStreams => [
+                    ...oldStreams,
+                    {
+                        stream: stream,
+                        user: userObject
+                    }
+                ]);
+            })
+        }
+        catch(err) {
+            console.error(err)
+        }
+    }
+
+    const onUserJoined = (client: User) => {
+        console.log({
+            ls: localStream,
+            peer: peer.current
+        })
+
+        if(localStream && peer.current) {
+
+            console.log(`Attempting to call ${client.peerId}`)
+
+            peer.current.call(client.peerId, localStream);
+        }
+
+        setUsers(oldUsers=> [
+            ...oldUsers,
+            client
+        ]);
+    }
+
+    const onUserLeft = (nickname: string) => {
+
+        console.log(nickname)
+
+        setStreams(oldStreams => [
+            ...oldStreams.filter(stream => stream.user.nickname !== nickname)
+        ]);
+
+        setUsers(oldUsers => [
+            ...oldUsers.filter(user => user.nickname !== nickname)
+        ]);
+    }
+
     useEffect(() => {
 
-        if(!peer || !users.length) return;
+        if(peer.current) {
+            peer.current.on('call', handlePeerCall);
+        }
         
-        setPeerListening(true);
-
-    }, [peer, users]);
-
-    useEffect(() => {
-
-        if(peerListening) return;
+        if(socket) {
+            socket.on(ClientEvents.userJoined, onUserJoined);
+            socket.on(ClientEvents.userLeft, onUserLeft);
+        }
 
 
-        // peer.current.on('call', (request) => {
-        //     try {
-        //         console.log({
-        //             peer: peer,
-        //             users: users
-        //         })
-                
-        //         request.answer();
-
-        //         const userObject = users.find(user => user.peerId == request.peer)
-    
-        //         if(!userObject) {
-        //             console.log("not found")
-    
-        //             return request.close();
-        //         }
-    
-        //         request.on('stream', (stream) => {
-        //             setStreams(oldStreams => [
-        //                 ...oldStreams,
-        //                 {
-        //                     stream: stream,
-        //                     user: userObject
-        //                 }
-        //             ]);
-        //         })
-        //     }
-        //     catch(err) {
-        //         console.error(err)
-        //     }
-
-        // });
-    }, [peerListening]);
+        return () => {
+            peer.current.off('call', handlePeerCall);
+            socket?.off(ClientEvents.userJoined, onUserJoined);
+            socket?.off(ClientEvents.userLeft, onUserLeft);
+        }
+    }, [users, localStream, socket]);
 
     useEffect(() => {
         const client = io('http://localhost:4000');
     
         setSocket(client);
 
-        peer.current.on('call', (call) => {
-            console.log(users)
-        })
-
         client.on('connect', () => {
             setModalVisible(true);
         });
 
-        client.on(ClientEvents.userJoined, (client: User) => {
+        // client.on(ClientEvents.userJoined, (client: User) => {
 
-            setUsers(oldUsers=> [
-                ...oldUsers,
-                client
-            ]);
-        });
+        //     console.log({
+        //         ls: localStream,
+        //         peer: peer.current
+        //     })
+
+        //     if(localStream && peer.current) {
+
+        //         console.log(`Attempting to call ${client.peerId}`)
+
+        //         peer.current.call(client.peerId, localStream);
+        //     }
+
+        //     setUsers(oldUsers=> [
+        //         ...oldUsers,
+        //         client
+        //     ]);
+        // });
 
         client.on(ClientEvents.banUser, () => {
             console.log('banned')
         });
 
-        client.on(ClientEvents.userLeft, (nickname: string) => {
+        // client.on(ClientEvents.userLeft, (nickname: string) => {
 
-            console.log(nickname)
+        //     console.log(nickname)
 
-            setUsers(oldUsers => [
-                ...oldUsers.filter(user => user.nickname !== nickname)
-            ]);
-        });
+        //     setUsers(oldUsers => [
+        //         ...oldUsers.filter(user => user.nickname !== nickname)
+        //     ]);
+        // });
 
         client.on(ClientEvents.userList, (clients: User[]) => {
             setUsers(oldUsers => [
@@ -141,8 +186,10 @@ const Main = () => {
     const handleStreamEvent = (e: MediaStream) => {
         console.log("streaming")
 
+        setLocalStream(e);
+
         if(users.length) {
-            users.map(user => {
+            users.filter(user => user.peerId !== peer.current.id).map(user => {
                 peer.current.call(user.peerId, e);
             });
         }
@@ -152,8 +199,8 @@ const Main = () => {
             {
                 stream: e,
                 user: {
-                    nickname: 'test',
-                    peerId: 'tedfcsmf',
+                    nickname: nickname,
+                    peerId: peer.current.id,
                     self: true
                 }
             }
