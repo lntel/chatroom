@@ -155,8 +155,10 @@ class Chat {
             result.socket?.disconnect();
         });
 
-        client.on(ClientEvents.userStreamStart, () => {
-            
+        client.on(ClientEvents.userStreamStop, (peerId: string) => {
+            console.log(`Stream halting ${peerId}`)
+
+            this.server.emit(ClientEvents.userStreamStop, peerId);
         });
 
         client.on(ClientEvents.banUser, (nickname: string) => {
