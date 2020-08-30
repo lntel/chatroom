@@ -9,6 +9,8 @@ enum ClientEvents {
     userJoined = 'user:joined',
     userLeft = 'user:left',
     userList = 'user:list',
+    userStreamStart = 'user:streamStart',
+    userStreamStop = 'user:streamStop',
     disconnect = 'disconnect',
     disconnectUser = 'disconnect:user',
     banUser = 'ban:user'
@@ -151,6 +153,10 @@ class Chat {
             if(!result) return;
 
             result.socket?.disconnect();
+        });
+
+        client.on(ClientEvents.userStreamStart, () => {
+            
         });
 
         client.on(ClientEvents.banUser, (nickname: string) => {
