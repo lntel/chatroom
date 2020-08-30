@@ -32,21 +32,29 @@ const Main = () => {
     const handlePeerCall = (call: MediaConnection) => {
         try {
             console.log(call)
-            
-            call.answer();
+
+            let streamRecieved: boolean = false;
 
             const userObject = users.find(user => user.peerId == call.peer)
 
             const dupeResult = streams.find(strm => strm.user.nickname === userObject?.nickname);
 
-            if(!userObject || dupeResult) {
-                console.log("not found")
+            if(!userObject || dupeResult) return;
 
-                return call.close();
-            }
+            call.answer();
 
             call.on('stream', (stream) => {
 
+                if(streamRecieved) return;
+
+                streamRecieved = true;
+
+                console.log({
+                    users: users,
+                    streams: streams
+                })
+
+                //if(streams.find(strm => strm.user.peerId === userObject.peerId)) return;
 
                 setStreams(oldStreams => [
                     ...oldStreams,
@@ -72,7 +80,11 @@ const Main = () => {
 
             console.log(`Attempting to call ${client.peerId}`)
 
-            peer.current.call(client.peerId, localStream);
+            peer.current.call(client.peerId, localStream, {
+                metadata: {
+                    nickname: nickname
+                }
+            });
         }
 
         setUsers(oldUsers=> [
@@ -94,6 +106,17 @@ const Main = () => {
         ]);
     }
 
+    const onStreamStopped = (id: string) => {
+
+        if(peer.current.id === id) {
+            setLocalStream(null);
+        }
+
+        setStreams(oldStreams => [
+            ...oldStreams.filter(stream => stream.user.peerId !== id)
+        ]);
+    }
+
     useEffect(() => {
 
         if(peer.current) {
@@ -103,6 +126,7 @@ const Main = () => {
         if(socket) {
             socket.on(ClientEvents.userJoined, onUserJoined);
             socket.on(ClientEvents.userLeft, onUserLeft);
+            socket.on(ClientEvents.userStreamStop, onStreamStopped);
         }
 
 
@@ -110,8 +134,9 @@ const Main = () => {
             peer.current.off('call', handlePeerCall);
             socket?.off(ClientEvents.userJoined, onUserJoined);
             socket?.off(ClientEvents.userLeft, onUserLeft);
+            socket?.off(ClientEvents.userStreamStop, onStreamStopped);
         }
-    }, [users, localStream, socket]);
+    }, [users, localStream, socket, streams]);
 
     useEffect(() => {
         const client = io('http://localhost:4000');
@@ -122,38 +147,9 @@ const Main = () => {
             setModalVisible(true);
         });
 
-        // client.on(ClientEvents.userJoined, (client: User) => {
-
-        //     console.log({
-        //         ls: localStream,
-        //         peer: peer.current
-        //     })
-
-        //     if(localStream && peer.current) {
-
-        //         console.log(`Attempting to call ${client.peerId}`)
-
-        //         peer.current.call(client.peerId, localStream);
-        //     }
-
-        //     setUsers(oldUsers=> [
-        //         ...oldUsers,
-        //         client
-        //     ]);
-        // });
-
         client.on(ClientEvents.banUser, () => {
             console.log('banned')
         });
-
-        // client.on(ClientEvents.userLeft, (nickname: string) => {
-
-        //     console.log(nickname)
-
-        //     setUsers(oldUsers => [
-        //         ...oldUsers.filter(user => user.nickname !== nickname)
-        //     ]);
-        // });
 
         client.on(ClientEvents.userList, (clients: User[]) => {
             setUsers(oldUsers => [
@@ -181,16 +177,24 @@ const Main = () => {
 
     const handleMicEvent = (e: boolean) => {
         console.log(e)
+
+        if(localStream) {
+            localStream.getAudioTracks()[0].enabled = !e
+        }
+
     }
 
     const handleStreamEvent = (e: MediaStream) => {
-        console.log("streaming")
 
         setLocalStream(e);
 
         if(users.length) {
             users.filter(user => user.peerId !== peer.current.id).map(user => {
-                peer.current.call(user.peerId, e);
+                peer.current.call(user.peerId, e, {
+                    metadata: {
+                        nickname: nickname
+                    }
+                });
             });
         }
 
@@ -208,6 +212,9 @@ const Main = () => {
     }
 
     const handleStreamEnded = (id: string) => {
+
+        socket?.emit(ClientEvents.userStreamStop, id);
+
         setStreams([
             ...streams.filter(stream => stream.user.peerId !== id)
         ]);
@@ -231,6 +238,16 @@ const Main = () => {
         socket?.connect();
 
         setReconnectVisible(false);
+    }
+
+    const handleLocalStreamEnd = () => {
+        setLocalStream(null);
+
+        setStreams(oldStreams => [
+            ...oldStreams.filter(stream => stream.user.peerId !== peer.current.id)
+        ]);
+
+        socket?.emit(ClientEvents.userStreamStop, peer.current.id);
     }
 
     return (
@@ -259,8 +276,10 @@ const Main = () => {
             onChat={() => setChatVisible(!chatVisible)} 
             onUserlist={() => setUserlistVisible(!userlistVisible)} 
             onSettings={() => setSettingsVisible(!settingsVisible)}
+            onStreamClose={() => handleLocalStreamEnd()}
             userlistVisible={userlistVisible}
             chatVisible={chatVisible}
+            streaming={Boolean(localStream)}
             />
             <SettingsModal visible={settingsVisible} onClose={() => setSettingsVisible(false)} />
             <Modal title="Please enter a nickname" visible={modalVisible}>
