@@ -25,6 +25,8 @@ export enum ClientEvents {
     userJoined = 'user:joined',
     userLeft = 'user:left',
     userList = 'user:list',
+    userStreamStart = 'user:streamStart',
+    userStreamStop = 'user:streamStop',
     disconnect = 'disconnect',
     disconnectUser = 'disconnect:user',
     banUser = 'ban:user'
