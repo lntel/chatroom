@@ -21,7 +21,7 @@ const UserModal: FC<UserModalProps> = ({ visible, positionX, positionY, onUnfocu
         position: 'fixed',
         left: `${positionX}px`,
         top: `${positionY}px`,
-        zIndex: 2
+        zIndex: 6
     }
 
     const detectUnfocus = (e: any) => {
