@@ -1,5 +1,5 @@
 import Peer from 'peerjs'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import io, { Socket } from 'socket.io-client'
 import Chat from '../../components/Chat'
 import Controls from '../../components/Controls'
@@ -9,9 +9,10 @@ import SettingsModal from '../../components/Settings'
 import Textbox from '../../components/Textbox'
 import Userlist from '../../components/Userlist'
 import Videolist from '../../components/Videolist'
-import { UserStream, ClientEvents, User, ChatMessage } from '../../types'
-import './index.scss'
 import ReconnectModal from '../../components/ReconnectModal'
+import './index.scss'
+
+import { UserStream, ClientEvents, User, ChatMessage } from '../../types'
 
 const Main = () => {
     const [settingsVisible, setSettingsVisible] = useState<boolean>(false);
@@ -22,20 +23,67 @@ const Main = () => {
     const [socket, setSocket] = useState<typeof Socket | null>(null);
     const [streams, setStreams] = useState<UserStream[]>([]);
     const [users, setUsers] = useState<User[]>([]);
-    const [peer, setPeer] = useState<Peer | null>(null);
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [nickname, setNickname] = useState<string>('');
+    const [peerListening, setPeerListening] = useState<boolean>(false);
+
+    const peer = useRef<Peer>(new Peer());
 
     useEffect(() => {
-        console.log(users);
-    }, [users]);
+
+        if(!peer || !users.length) return;
+        
+        setPeerListening(true);
+
+    }, [peer, users]);
+
+    useEffect(() => {
+
+        if(peerListening) return;
+
+
+        // peer.current.on('call', (request) => {
+        //     try {
+        //         console.log({
+        //             peer: peer,
+        //             users: users
+        //         })
+                
+        //         request.answer();
+
+        //         const userObject = users.find(user => user.peerId == request.peer)
+    
+        //         if(!userObject) {
+        //             console.log("not found")
+    
+        //             return request.close();
+        //         }
+    
+        //         request.on('stream', (stream) => {
+        //             setStreams(oldStreams => [
+        //                 ...oldStreams,
+        //                 {
+        //                     stream: stream,
+        //                     user: userObject
+        //                 }
+        //             ]);
+        //         })
+        //     }
+        //     catch(err) {
+        //         console.error(err)
+        //     }
+
+        // });
+    }, [peerListening]);
 
     useEffect(() => {
         const client = io('http://localhost:4000');
-        const peer = new Peer();
-
-        setPeer(peer);
+    
         setSocket(client);
+
+        peer.current.on('call', (call) => {
+            console.log(users)
+        })
 
         client.on('connect', () => {
             setModalVisible(true);
@@ -80,6 +128,7 @@ const Main = () => {
         });
 
         client.on('disconnect', () => {
+            setUsers([]);
             setModalVisible(false);
             setReconnectVisible(true);
         })
@@ -91,6 +140,12 @@ const Main = () => {
 
     const handleStreamEvent = (e: MediaStream) => {
         console.log("streaming")
+
+        if(users.length) {
+            users.map(user => {
+                peer.current.call(user.peerId, e);
+            });
+        }
 
         setStreams(old => [
             ...old,
@@ -116,7 +171,7 @@ const Main = () => {
 
         if(nickname.length === 0 || nickname.length > 25) return;
 
-        socket?.emit(ClientEvents.setNickname, nickname, peer?.id);
+        socket?.emit(ClientEvents.setNickname, nickname, peer.current.id);
 
         setModalVisible(false);
     }
