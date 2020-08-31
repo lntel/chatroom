@@ -57,7 +57,7 @@ const UserModal: FC<UserModalProps> = ({ visible, positionX, positionY, onUnfocu
                 </div>
                 <div className="user-modal__option">
                     <p>Volume</p>
-                    <Slider min={0} max={1} step={0.01} />
+                    <Slider min={0} max={1} step={0.01} onChange={console.log} />
                 </div>
             </div>
         </FadeIn>
