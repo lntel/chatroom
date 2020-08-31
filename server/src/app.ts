@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Request, Response } from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import { createConnection, ConnectionOptions } from 'typeorm';
 import { createServer } from 'http'
@@ -17,7 +17,8 @@ const startServer = async () => {
         schema: await buildSchema({
             resolvers: [UserResolver],
             validate: true
-        })
+        }),
+        context: ({ req, res }: { req: Request, res: Response }) => ({ req, res })
     })
 
     server.applyMiddleware({ app });
