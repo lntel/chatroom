@@ -184,6 +184,40 @@ const Main = () => {
 
     }
 
+    const handleChatToggle = () => {
+
+        if(chatVisible) return setChatVisible(false);
+
+        if(userlistVisible) {
+            setUserlistVisible(false);
+
+            let delay = setTimeout(() => {
+                setChatVisible(true);
+
+                clearTimeout(delay);
+            }, 300);
+        } else {
+            setChatVisible(true);
+        }
+    }
+
+    const handleUserlistToggle = () => {
+
+        if(userlistVisible) return setUserlistVisible(false);
+
+        if(chatVisible) {
+            setChatVisible(false);
+
+            let delay = setTimeout(() => {
+                setUserlistVisible(true);
+
+                clearTimeout(delay);
+            }, 300);
+        } else {
+            setUserlistVisible(true);
+        }
+    }
+
     const handleStreamEvent = (e: MediaStream) => {
 
         setLocalStream(e);
@@ -273,8 +307,8 @@ const Main = () => {
             <Controls 
             onMicEvent={(e: boolean) => handleMicEvent(e)} 
             onStreamEvent={(e) => handleStreamEvent(e)} 
-            onChat={() => setChatVisible(!chatVisible)} 
-            onUserlist={() => setUserlistVisible(!userlistVisible)} 
+            onChat={() => handleChatToggle()} 
+            onUserlist={() => handleUserlistToggle()} 
             onSettings={() => setSettingsVisible(!settingsVisible)}
             onStreamClose={() => handleLocalStreamEnd()}
             userlistVisible={userlistVisible}
