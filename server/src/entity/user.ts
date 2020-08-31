@@ -1,28 +1,28 @@
-import { Entity, Column, BaseEntity, PrimaryGeneratedColumn} from 'typeorm'
-import {Field, ObjectType} from 'type-graphql'
+import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, ObjectIdColumn} from 'typeorm'
+import {Field, ID, ObjectType} from 'type-graphql'
+import { isEmail } from 'class-validator';
 
 //Users table entity
-@Entity()
 @ObjectType()
+@Entity()
 export default class User extends BaseEntity {
 
     //Id field
-    @Field()
-    @PrimaryGeneratedColumn()
-    id: number;
+    @Field(() => ID)
+    @ObjectIdColumn()
+    id: string ;
 
     //Username field
     @Field()
-    @Column(() => String)
+    @Column()
     username: string;
 
     //Password field
-    @Field()
-    @Column(() => String)
+    @Column()
     password: string;
 
     @Field()
-    @Column(() => String)
+    @Column()
     emailAddress: string;
 
 }
