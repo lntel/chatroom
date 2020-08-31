@@ -1,15 +1,19 @@
 @import '../../global';
 
 .controls {
-    grid-row: 11 / 13;
-    grid-column: 4 / 13;
+    grid-row: 1 / 13;
+    grid-column: 1 / 2;
+    background: $darker;
 
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
 
     button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         border: 0;
         width: 70px;
         height: 70px;
@@ -35,8 +39,16 @@
             background: $brand;
 
             &:hover {
-                background: #3d6eaa;
+                background: darken($brand, 10%);
             }
+        }
+    }
+
+    &__stream-stop {
+        background: #fa5a5a;
+
+        &:hover {
+            background: #b64141;
         }
     }
 
@@ -44,7 +56,7 @@
         background: $brand;
 
         &:hover {
-            background: #3d6eaa;
+            background: darken($brand, 10%)
         }
 
         svg {
@@ -53,11 +65,35 @@
         }
     }
 
+    &__settings {
+        background: $brand;
+
+        &:hover {
+            background: darken($brand, 10%);
+            animation: settingSpin 1s linear;
+        }
+
+        svg {
+            font-size: 1.8rem;
+            color: $white;
+        }
+    }
+
+    @keyframes settingSpin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
     &__screenshare {
         background: $brand;
 
         &:hover {
-            background: #3d6eaa;
+            background: darken($brand, 10%);
         }
 
         svg {
@@ -70,7 +106,7 @@
         background: $brand;
 
         &:hover {
-            background: #3d6eaa;
+            background: darken($brand, 10%);
         }
 
         svg {

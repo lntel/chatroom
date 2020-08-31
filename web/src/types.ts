@@ -12,6 +12,7 @@ export interface UserStream {
 export interface ChatMessage {
     id: string
     content: string
+    system: boolean
     user: User
     postedDate: number | string | Date
 }
@@ -24,5 +25,9 @@ export enum ClientEvents {
     userJoined = 'user:joined',
     userLeft = 'user:left',
     userList = 'user:list',
-    disconnect = 'disconnect'
+    userStreamStart = 'user:streamStart',
+    userStreamStop = 'user:streamStop',
+    disconnect = 'disconnect',
+    disconnectUser = 'disconnect:user',
+    banUser = 'ban:user'
 }

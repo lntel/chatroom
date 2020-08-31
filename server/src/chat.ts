@@ -9,13 +9,18 @@ enum ClientEvents {
     userJoined = 'user:joined',
     userLeft = 'user:left',
     userList = 'user:list',
-    disconnect = 'disconnect'
+    userStreamStart = 'user:streamStart',
+    userStreamStop = 'user:streamStop',
+    disconnect = 'disconnect',
+    disconnectUser = 'disconnect:user',
+    banUser = 'ban:user'
 }
 
 class Chat {
 
     server: IOServer;
     clients: Client[];
+    bans: string[];
 
     /**
      * Constructor
@@ -25,6 +30,7 @@ class Chat {
         this.server = io(serverInstance);
 
         this.clients = [];
+        this.bans = [];
 
         this.initListeners();
 
@@ -76,12 +82,27 @@ class Chat {
         const user: Client = {
             nickname: '',
             peerId: '',
-            id: ''
+            id: '',
+            socket: client
+        }
+
+        if(this.bans.indexOf(client.handshake.address) !== -1) {
+            return client.emit(ClientEvents.banUser);
         }
 
         console.log(`${client.id} connected`);
 
-        client.emit(ClientEvents.userList, this.clients)
+        const filteredUserlist: Client[] = [];
+
+        this.clients.map(c => {
+            filteredUserlist.push({
+                id: c.id,
+                nickname: c.nickname,
+                peerId: c.peerId
+            });
+        });
+
+        client.emit(ClientEvents.userList, filteredUserlist);
 
         setTimeout(() => {
             if(!user.nickname && !user.peerId) {
@@ -111,11 +132,45 @@ class Chat {
         });
 
         client.on(ClientEvents.sendMessage, (message: string) => {
+
+            if(!message.match(/^[ -~]+$/g)) return;
+
             this.server.emit(ClientEvents.sendMessage, {
                 content: message,
-                user: user,
-                postedDate: new Date()
+                user: {
+                    nickname: user.nickname,
+                    peerId: user.peerId,
+                    id: user.id
+                },
+                postedDate: new Date(),
+                system: false
             })
+        });
+
+        client.on(ClientEvents.disconnectUser, (peerId: string) => {
+            const result = this.clients.find(client => client.peerId === peerId);
+
+            if(!result) return;
+
+            result.socket?.disconnect();
+        });
+
+        client.on(ClientEvents.userStreamStop, (peerId: string) => {
+            console.log(`Stream halting ${peerId}`)
+
+            this.server.emit(ClientEvents.userStreamStop, peerId);
+        });
+
+        client.on(ClientEvents.banUser, (nickname: string) => {
+            const result = this.clients.find(client => client.nickname === nickname);
+
+            if(!result) return;
+
+            this.bans.push(result.socket!.handshake.address);
+
+            result.socket?.emit(ClientEvents.banUser);
+
+            result.socket?.disconnect();
         });
 
         client.on(ClientEvents.disconnect, () => {

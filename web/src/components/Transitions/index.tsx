@@ -18,7 +18,15 @@ export const FadeIn: FC<FadeInProps> = ({ state, children }) => {
 
 export const SlideInRight: FC<FadeInProps> = ({ state, children }) => {
     return (
-        <CSSTransition in={state} timeout={300} classNames="slide-transition" unmountOnExit>
+        <CSSTransition in={state} timeout={300} classNames="slide-right-transition" unmountOnExit>
+            { children }
+        </CSSTransition>
+    );
+}
+
+export const SlideInLeft: FC<FadeInProps> = ({ state, children }) => {
+    return (
+        <CSSTransition in={state} timeout={300} classNames="slide-left-transition" unmountOnExit>
             { children }
         </CSSTransition>
     );

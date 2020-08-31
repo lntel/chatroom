@@ -7,10 +7,15 @@
     width: 30%;
     height: 100%;
     backdrop-filter: blur(7px);
-    background: #404552c0;
+    background: rgba($darker, .8);
 
     display: flex;
     flex-direction: column;
+
+    input {
+        background: $dark;
+        color: $white;
+    }
 
     &__message {
         background: $dark;
@@ -24,6 +29,12 @@
 
         p {
             color: $white;
+            word-wrap: break-word;
+        }
+
+        &--self {
+            background: $brand;
+            color: $white;
         }
     }
 
@@ -31,6 +42,21 @@
         flex: 1;
         padding: 1em;
         overflow: auto;
+
+        &::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        &::-webkit-scrollbar-track {
+            width: 7px;
+            background: $dark;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            width: 7px;
+            background: $base;
+            border-radius: .2em;
+        }
     }
 
     &__input {

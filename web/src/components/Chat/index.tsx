@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { ChatMessage } from '../../types'
 import Textbox from '../Textbox'
 import { SlideInRight } from '../Transitions'
@@ -22,19 +22,25 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
             <div className="chat">
                 <div className="chat__container">
                     { messages && messages.length ? messages.map(message =>
-                        <div className="chat__message">
+                        <>
+                        { message.system ? (
+                            <div className="chat__system-message">
+                                <p>testing</p>
+                            </div>
+                        ) : (
+                        <div className={message.user.self ? "chat__message chat__message--self" : "chat__message"}>
                             <span className="chat__message__nickname">
                                 { message.user.nickname }
                             </span>
                             <p>
                                 { message.content }
                             </p>
-                        </div>
+                        </div> 
+                        ) }
+                        </>
                     ) : null }
                 </div>
                 <Textbox 
-                bgColor="#4B5162" 
-                fgColor="#f3f3f3" 
                 className="chat__input" 
                 padding="1.7em" 
                 placeholder="Enter a message" 

@@ -1,6 +1,8 @@
 import React, { FC, useEffect, useRef } from 'react'
 import { User } from '../../types';
 
+import CloseIcon from '@material-ui/icons/Close';
+
 interface VideoProps {
     stream: MediaStream
     user: User
@@ -16,10 +18,21 @@ const Video: FC<VideoProps> = ({ stream, onStreamEnded, user }) => {
         stream.getTracks()[0].onended = function(e) {
             onStreamEnded(user.peerId)
         }
+
+        
     }, []);
 
     return (
-        <video ref={videoRef} muted={user.self} className="videolist__video" onLoadedMetadata={() => videoRef.current?.play()}></video>
+        <div className="videolist__video">
+            <div className="videolist__video__data">
+                <CloseIcon>Filled</CloseIcon>
+            </div>
+            <video 
+            ref={videoRef} 
+            muted={user.self} 
+            className="videolist__video" 
+            onLoadedMetadata={() => videoRef.current?.play()}></video>
+        </div>
     )
 }
 

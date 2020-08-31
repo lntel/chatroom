@@ -1,0 +1,89 @@
+@import '../../global';
+
+.settings-modal {
+    width: 100%;
+    color: $light;
+
+    &__description {
+        margin: 0 0 1em 0;
+    }
+
+    select {
+        width: 100%;
+        background: $dark;
+        color: $brand;
+    }
+
+    &__header {
+        color: $brand;
+        font-weight: 400;
+        font-size: 1.2rem;
+        margin: 0 0 7px 0;
+    }
+
+    &__audio {
+        display: grid;
+        grid-gap: 7px;
+        grid-template-columns: repeat(2, 50%);
+        grid-template-rows: 1fr;
+        margin: 0 0 1em 0;
+
+        &__title {
+            display: flex;
+            align-items: center;
+            margin: 0 0 7px 0;
+
+            svg {
+                margin: 0 7px 0 0;
+            }
+        }
+
+        &__type {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
+            &:last-of-type {
+                width: calc(100% - 7px);
+            }
+        }
+
+        select {
+            background: $dark;
+            color: $brand;
+            width: 100%;
+        }
+    }
+
+    &__video {
+        &__title {
+            display: flex;
+            align-items: center;
+            margin: 0 0 7px 0;
+
+            svg {
+                margin: 0 7px 0 0;
+            }
+        }
+    }
+
+    &__audio-description, &__video-description {
+        margin: 0 0 1em 0;
+    }
+
+    &__close {
+        border: 0;
+        border-radius: .2em;
+        padding: 1.3em 2em;
+        background: #ff6666;
+        color: $darkest;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background .3s ease-in-out;
+
+        &:hover {
+            background: darken(#ff6666, 5%);
+        }
+    }
+
+}
