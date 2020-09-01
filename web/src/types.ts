@@ -2,6 +2,7 @@ export interface User {
     nickname: string
     peerId: string
     self?: boolean
+    streaming: boolean
 }
 
 export interface UserStream {

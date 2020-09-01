@@ -36,11 +36,11 @@ const Main = () => {
 
             let streamRecieved: boolean = false;
 
-            const userObject = users.find(user => user.peerId == call.peer)
+            const userIndex = users.findIndex(user => user.peerId == call.peer)
 
-            const dupeResult = streams.find(strm => strm.user.nickname === userObject?.nickname);
+            const dupeResult = streams.find(strm => strm.user.nickname === users[userIndex].nickname);
 
-            if(!userObject || dupeResult) return;
+            if(userIndex === -1 || dupeResult) return;
 
             call.answer();
 
@@ -55,13 +55,23 @@ const Main = () => {
                     streams: streams
                 })
 
+                const newUserObject = users.find(user => user.nickname === users[userIndex].nickname)!;
+
+                setUsers(oldUsers => [
+                    ...oldUsers.filter(user => user.nickname !== users[userIndex].nickname),
+                    {
+                        ...newUserObject,
+                        streaming: true
+                    }
+                ]);
+
                 //if(streams.find(strm => strm.user.peerId === userObject.peerId)) return;
 
                 setStreams(oldStreams => [
                     ...oldStreams,
                     {
                         stream: stream,
-                        user: userObject
+                        user: users[userIndex]
                     }
                 ]);
             })
@@ -90,7 +100,10 @@ const Main = () => {
 
         setUsers(oldUsers=> [
             ...oldUsers,
-            client
+            {
+                ...client,
+                streaming: false
+            }
         ]);
     }
 
@@ -244,6 +257,14 @@ const Main = () => {
             });
         }
 
+        setUsers(oldUsers => [
+            ...oldUsers.filter(user => user.nickname !== nickname),
+            {
+                ...oldUsers.find(user => user.nickname === nickname)!,
+                streaming: true
+            }
+        ]);
+
         setStreams(old => [
             ...old,
             {
@@ -251,7 +272,8 @@ const Main = () => {
                 user: {
                     nickname: nickname,
                     peerId: peer.current.id,
-                    self: true
+                    self: true,
+                    streaming: true
                 }
             }
         ]);
@@ -289,6 +311,14 @@ const Main = () => {
     const handleLocalStreamEnd = () => {
         setLocalStream(null);
         setMuted(false);
+
+        setUsers(oldUsers => [
+            ...oldUsers.filter(user => user.nickname !== nickname),
+            {
+                ...oldUsers.find(user => user.nickname === nickname)!,
+                streaming: false
+            }
+        ]);
 
         setStreams(oldStreams => [
             ...oldStreams.filter(stream => stream.user.peerId !== peer.current.id)

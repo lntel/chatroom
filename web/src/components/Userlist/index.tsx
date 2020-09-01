@@ -4,6 +4,7 @@ import { Socket } from 'socket.io-client'
 import './index.scss'
 
 import ClearIcon from '@material-ui/icons/Clear';
+
 import UserModal from '../UserModal';
 import User, { OnSelectCallback } from '../User';
 import { ClientEvents, User as IUser } from '../../types';
@@ -83,7 +84,8 @@ const Userlist: FC<UserlistProps> = ({ users, visible, socket }) => {
                     { users && users.length ? users.map((user: IUser) =>
                         <User 
                         nickname={user.nickname} 
-                        peerId={user.peerId} 
+                        peerId={user.peerId}
+                        streaming={user.streaming} 
                         key={user.peerId} 
                         onSelected={(e: OnSelectCallback) => handleUserSelection(e.id, { x: e.x, y: e.y })} 
                         />
