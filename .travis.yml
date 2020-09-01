@@ -4,6 +4,6 @@ node_js:
 script:
   - cd web
   - yarn
-  - yarn build
+  - tsc build
 cache:
   yarn: true
