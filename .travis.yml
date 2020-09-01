@@ -6,8 +6,5 @@ cache:
     - node_modules
 script: 
   - cd web
-  - npm i
-  - npm test
-  - npm run build
-before_script:
-
+  - yarn
+  - yarn run build
