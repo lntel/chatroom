@@ -14,11 +14,12 @@ interface TextboxProps {
     bgColor?: Colors
     padding?: string | number
     margin?: string | number
+    borderRadius?: string | number
     onChange?: (v: string) => void
     onEnter?: () => void
 }
 
-const Textbox: FC<TextboxProps> = ({ type = 'text', onChange, value, fgColor, bgColor, padding, margin, placeholder, className, onEnter }) => {
+const Textbox: FC<TextboxProps> = ({ type = 'text', onChange, value, fgColor, bgColor, padding, margin, placeholder, className, onEnter, borderRadius = '.2em' }) => {
     const [internalValue, setInternalValue] = useState<string>('');
 
     const style: CSSProperties = {
@@ -27,7 +28,7 @@ const Textbox: FC<TextboxProps> = ({ type = 'text', onChange, value, fgColor, bg
         padding: padding,
         margin: margin,
         border: '0',
-        borderRadius: '.2em'
+        borderRadius: borderRadius
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
