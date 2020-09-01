@@ -3,9 +3,11 @@ This project is a chatroom created using a MERN stack which utilises modern WebR
 
 ## Contents
 - [Screenshots](#screenshots)
+    - [Main Page](#main-page)
+    - [Settings Modal](#settings-modal)
 
 ### Screenshots
-This section contains screenshots of the design of the web application. This project was created entirely using SCSS enabled by the [node-sass](https://www.npmjs.com/package/node-sass) package.
+This section contains screenshots of the design of the web application. This project was created entirely using SCSS enabled by the [node-sass](https://www.npmjs.com/package/node-sass) package. The design of this web app was primarily inspired by Discord.
 
 #### Main Page
 ![MainPage](https://i.imgur.com/CQ3CmUA.png)
