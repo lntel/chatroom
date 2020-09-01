@@ -15,6 +15,12 @@
     input {
         background: $dark;
         color: $white;
+        flex: 1;
+        border-radius: 0;
+    }
+
+    &__input {
+        display: flex;
     }
 
     &__message {
