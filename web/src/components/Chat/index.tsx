@@ -18,6 +18,10 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
         onMessage(messageInput);
     }
     
+    const onFilesSelected = (files: FileList) => {
+        console.log(files)
+    }
+    
     return (
         <SlideInRight state={visible}>
             <div className="chat">
@@ -42,7 +46,7 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
                     ) : null }
                 </div>
                 <div className="chat__input">
-                    <FileInput format="images" />
+                    <FileInput format="images" onSelection={e => onFilesSelected(e)} />
                     <Textbox 
                     className="chat__input" 
                     padding="1.7em" 
