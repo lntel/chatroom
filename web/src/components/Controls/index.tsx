@@ -1,4 +1,4 @@
-import React, { FC, useReducer, useState } from 'react'
+import React, { FC, useContext, useReducer, useState } from 'react'
 import './index.scss'
 
 import ScreenShareIcon from '@material-ui/icons/ScreenShare';
@@ -12,6 +12,7 @@ import ChatIcon from '@material-ui/icons/Chat';
 import MicIcon from '@material-ui/icons/Mic';
 import { FadeIn } from '../Transitions';
 import { settingsReducer } from '../../reducers/settings';
+import { SettingsContext } from '../../context/SettingsContext';
 
 interface ControlsProps {
     onMicEvent: (e: boolean) => void
@@ -29,11 +30,7 @@ interface ControlsProps {
 const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUserlist, userlistVisible, chatVisible, onSettings, streaming, onStreamClose, muted }) => {
     //const [muted, setMuted] = useState<boolean>(false);
 
-    const [settings, settingsDispatch] = useReducer(settingsReducer, {}, () => {
-        const result = localStorage.getItem('mediaSettings');
-
-        return result ? JSON.parse(result) : {};
-    });
+    const {state, dispatch} = useContext(SettingsContext);
 
     const handleMicChange = () => {
 
@@ -52,7 +49,7 @@ const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUser
         const microphone = await navigator.mediaDevices.getUserMedia({
             audio: {
                 deviceId: {
-                    exact: settings.audioInput
+                    exact: state.audioInput!
                 }
             }
         });
@@ -67,12 +64,12 @@ const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUser
         const stream = await navigator.mediaDevices.getUserMedia({
             video: {
                 deviceId: {
-                    exact: settings.videoInput
+                    exact: state.videoInput
                 }
             },
             audio: {
                 deviceId: {
-                    exact: settings.audioInput
+                    exact: state.audioInput
                 }
             }
         });
