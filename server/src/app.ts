@@ -1,14 +1,27 @@
-import express from 'express'
+import express, { Request, Response } from 'express'
+import { ApolloServer } from 'apollo-server-express'
+import { createConnection, ConnectionOptions } from 'typeorm';
 import { createServer } from 'http'
+
 import Chat from './chat';
 import config from './config';
-import { createConnection, ConnectionOptions } from 'typeorm';
-import { error } from 'console';
+import { buildSchema } from 'type-graphql';
+import { UserResolver } from './resolver/user';
 
 const startServer = async () => {
     const app = express();
 
     const http = createServer(app);
+
+    const server = new ApolloServer({
+        schema: await buildSchema({
+            resolvers: [UserResolver],
+            validate: true
+        }),
+        context: ({ req, res }: { req: Request, res: Response }) => ({ req, res })
+    })
+
+    server.applyMiddleware({ app });
 
     // Listen on api port
     http.listen({
