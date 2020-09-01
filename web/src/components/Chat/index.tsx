@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react'
 import { ChatMessage } from '../../types'
-import Textbox from '../Textbox'
 import { SlideInRight } from '../Transitions'
+import FileInput from '../FileInput'
+import Textbox from '../Textbox'
 import './index.scss'
 
 interface ChatProps {
@@ -40,13 +41,18 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
                         </>
                     ) : null }
                 </div>
-                <Textbox 
-                className="chat__input" 
-                padding="1.7em" 
-                placeholder="Enter a message" 
-                onChange={(v: string) => setMessageInput(v)} 
-                onEnter={() => handleMessageSend()}
-                value={messageInput} />
+                <div className="chat__input">
+                    <FileInput format="images" />
+                    <Textbox 
+                    className="chat__input" 
+                    padding="1.7em" 
+                    borderRadius="0"
+                    placeholder="Enter a message" 
+                    onChange={(v: string) => setMessageInput(v)} 
+                    onEnter={() => handleMessageSend()}
+                    value={messageInput} 
+                    />
+                </div>
             </div>
         </SlideInRight>
     )
