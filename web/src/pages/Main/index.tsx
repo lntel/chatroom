@@ -180,7 +180,16 @@ const Main = () => {
         console.log(e)
 
         if(localStream) {
-            localStream.getAudioTracks()[0].enabled = !e;
+
+            const audioTracks = localStream.getAudioTracks();
+
+            if(audioTracks.length > 1) {
+                audioTracks.map((track) => {
+                    track.enabled = !e;
+                })
+            } else if(audioTracks.length === 1) {
+                audioTracks[0].enabled = !e;
+            }
 
             setMuted(!muted);
         }
