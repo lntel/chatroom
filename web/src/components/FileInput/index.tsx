@@ -8,9 +8,10 @@ type FileInputFormats = | 'images' | 'any';
 
 interface FileInputProps {
     format?: FileInputFormats
+    multiple?: boolean
 }
 
-const FileInput: FC<FileInputProps> = ({ format }) => {
+const FileInput: FC<FileInputProps> = ({ format, multiple = false }) => {
     const [formatString, setFormatString] = useState<string>('');
 
     useEffect(() => {
@@ -20,9 +21,13 @@ const FileInput: FC<FileInputProps> = ({ format }) => {
         }
     }, []);
 
+    const handleChange = (files: FileList | null) => {
+        console.log(files[0])
+    }
+
     return (
         <>
-        <input type="file" id="files" className="file-input" accept={formatString} />
+        <input type="file" id="files" className="file-input" accept={formatString} onChange={(e) => handleChange(e.target.files)} multiple={multiple} />
         <label htmlFor="files">
             { format === 'images' ? (
                 <ImageIcon>Filled</ImageIcon>
