@@ -8,10 +8,11 @@ type FileInputFormats = | 'images' | 'any';
 
 interface FileInputProps {
     format?: FileInputFormats
+    onSelection?: (e: FileList) => void
     multiple?: boolean
 }
 
-const FileInput: FC<FileInputProps> = ({ format, multiple = false }) => {
+const FileInput: FC<FileInputProps> = ({ format, onSelection, multiple = false }) => {
     const [formatString, setFormatString] = useState<string>('');
 
     useEffect(() => {
@@ -22,7 +23,7 @@ const FileInput: FC<FileInputProps> = ({ format, multiple = false }) => {
     }, []);
 
     const handleChange = (files: FileList | null) => {
-        console.log(files[0])
+        onSelection && files && onSelection(files);
     }
 
     return (
