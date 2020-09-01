@@ -25,8 +25,12 @@
     }
 
     &__user {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
         background: $dark;
-        padding: 1.7em;
+        padding: 1.7em 0 1.7em 1.7em;
         margin: 0 0 7px 0;
         color: $white;
         cursor: pointer;
@@ -34,6 +38,20 @@
 
         &:hover {
             filter: brightness(115%);
+        }
+
+        &__icons {
+            display: flex;
+            justify-content: space-evenly;
+            width: 30%;
+        }
+
+        &__icon {
+            
+
+            &--camera {
+                color: $brand;
+            }
         }
     }
 }
