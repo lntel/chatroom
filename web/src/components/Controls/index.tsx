@@ -23,10 +23,11 @@ interface ControlsProps {
     userlistVisible: boolean
     chatVisible: boolean
     streaming: boolean
+    muted: boolean
 }
 
-const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUserlist, userlistVisible, chatVisible, onSettings, streaming, onStreamClose }) => {
-    const [muted, setMuted] = useState<boolean>(false);
+const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUserlist, userlistVisible, chatVisible, onSettings, streaming, onStreamClose, muted }) => {
+    //const [muted, setMuted] = useState<boolean>(false);
 
     const [settings, settingsDispatch] = useReducer(settingsReducer, {}, () => {
         const result = localStorage.getItem('mediaSettings');
@@ -37,8 +38,6 @@ const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUser
     const handleMicChange = () => {
 
         onMicEvent(!muted);
-
-        setMuted(!muted);
     }
 
     const handleScreenshare = async () => {

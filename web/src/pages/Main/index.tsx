@@ -20,6 +20,7 @@ const Main = () => {
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [reconnectVisible, setReconnectVisible] = useState<boolean>(false);
     const [chatVisible, setChatVisible] = useState<boolean>(false);
+    const [muted, setMuted] = useState<boolean>(false);
     const [socket, setSocket] = useState<typeof Socket | null>(null);
     const [streams, setStreams] = useState<UserStream[]>([]);
     const [users, setUsers] = useState<User[]>([]);
@@ -179,7 +180,18 @@ const Main = () => {
         console.log(e)
 
         if(localStream) {
-            localStream.getAudioTracks()[0].enabled = !e
+
+            const audioTracks = localStream.getAudioTracks();
+
+            if(audioTracks.length > 1) {
+                audioTracks.map((track) => {
+                    track.enabled = !e;
+                })
+            } else if(audioTracks.length === 1) {
+                audioTracks[0].enabled = !e;
+            }
+
+            setMuted(!muted);
         }
 
     }
@@ -276,6 +288,7 @@ const Main = () => {
 
     const handleLocalStreamEnd = () => {
         setLocalStream(null);
+        setMuted(false);
 
         setStreams(oldStreams => [
             ...oldStreams.filter(stream => stream.user.peerId !== peer.current.id)
@@ -314,6 +327,7 @@ const Main = () => {
             userlistVisible={userlistVisible}
             chatVisible={chatVisible}
             streaming={Boolean(localStream)}
+            muted={muted}
             />
             <SettingsModal visible={settingsVisible} onClose={() => setSettingsVisible(false)} />
             <Modal title="Please enter a nickname" visible={modalVisible}>
