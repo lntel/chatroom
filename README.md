@@ -5,3 +5,5 @@ This project is a chatroom created using a MERN stack which utilises modern WebR
 [Screenshots](#screenshots)
 
 ### Screenshots
+
+![MainPage](https://i.imgur.com/CQ3CmUA.png)
