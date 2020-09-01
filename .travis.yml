@@ -5,5 +5,3 @@ script:
   - cd web
   - yarn
   - yarn build
-os:
-  - windows
