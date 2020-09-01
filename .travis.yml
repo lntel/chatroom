@@ -4,10 +4,10 @@ node_js:
 cache:
   directories:
     - node_modules
-install:
+script: 
+  - cd web
   - npm i
-script:
   - npm test
   - npm run build
 before_script:
-  - cd web
+
