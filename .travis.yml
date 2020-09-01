@@ -4,7 +4,6 @@ node_js:
 script:
   - cd web
   - yarn
-  - less tsconfig.json
   - npm build
 cache:
   yarn: true
