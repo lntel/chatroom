@@ -6,8 +6,9 @@
     right: 0;
     width: 30%;
     height: 100%;
-    backdrop-filter: blur(7px);
-    background: rgba($darker, .8);
+    background: $darker;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
+    z-index: 1;
 
     display: flex;
     flex-direction: column;
@@ -15,6 +16,12 @@
     input {
         background: $dark;
         color: $white;
+        flex: 1;
+        border-radius: 0;
+    }
+
+    &__input {
+        display: flex;
     }
 
     &__message {

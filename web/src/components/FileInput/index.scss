@@ -1,0 +1,23 @@
+@import '../../global';
+
+.file-input {
+    display: none;
+}
+
+label {
+    background: $brand;
+    padding: 0 1.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background .3s ease-in-out;
+
+    &:hover {
+        background: darken($brand, 10%);
+    }
+
+    svg {
+        color: $white;
+    }
+}

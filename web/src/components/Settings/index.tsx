@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useReducer, useState } from 'react'
+import React, { FC, useContext, useEffect, useReducer, useState } from 'react'
 import './index.scss'
 
 import Modal from '../Modal'
@@ -9,6 +9,7 @@ import HeadsetIcon from '@material-ui/icons/Headset';
 import VideocamIcon from '@material-ui/icons/Videocam';
 
 import { settingsReducer } from '../../reducers/settings';
+import { SettingsContext } from '../../context/SettingsContext';
 
 interface SettingsModalProps {
     visible: boolean
@@ -20,41 +21,33 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
     const [audioSources, setAudioSources] = useState<MediaDeviceInfo[]>([]);
     const [audioOutputSources, setAudioOutputSources] = useState<MediaDeviceInfo[]>([]);
 
-    const [settings, settingsDispatch] = useReducer(settingsReducer, {}, () => {
-        const result = localStorage.getItem('mediaSettings');
-
-        return result ? JSON.parse(result) : {};
-    });
+    const { state, dispatch } = useContext(SettingsContext);
 
     useEffect(() => {
-        if(!settings.videoInput && videoSources.length) {
+        if(!state.videoInput && videoSources.length) {
 
             console.log(videoSources[0].deviceId)
 
-            settingsDispatch({
+            dispatch({
                 type: 'UPDATE_VIDEO_INPUT',
                 deviceId: videoSources[0].deviceId
             });
         }
 
-        if(!settings.audioInput && audioSources.length) {
-            settingsDispatch({
+        if(!state.audioInput && audioSources.length) {
+            dispatch({
                 type: 'UPDATE_AUDIO_INPUT',
                 deviceId: audioSources[0].deviceId
             });
         }
 
-        if(!settings.audioOutput && audioOutputSources.length) {
-            settingsDispatch({
+        if(!state.audioOutput && audioOutputSources.length) {
+            dispatch({
                 type: 'UPDATE_AUDIO_OUTPUT',
                 deviceId: audioOutputSources[0].deviceId
             });
         }
     }, [videoSources, audioSources, audioOutputSources]);
-
-    useEffect(() => {
-        localStorage.setItem('mediaSettings', JSON.stringify(settings));
-    }, [settings]);
 
     useEffect(() => {
         requestDevicePermission();
@@ -72,7 +65,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
 
         console.log(deviceId)
 
-        settingsDispatch({
+        dispatch({
             type: 'UPDATE_VIDEO_INPUT',
             deviceId: deviceId
         });
@@ -82,7 +75,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
 
         console.log(deviceId)
 
-        settingsDispatch({
+        dispatch({
             type: 'UPDATE_AUDIO_OUTPUT',
             deviceId: deviceId
         });
@@ -92,7 +85,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
 
         console.log(deviceId)
 
-        settingsDispatch({
+        dispatch({
             type: 'UPDATE_AUDIO_INPUT',
             deviceId: deviceId
         });
@@ -144,7 +137,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
                             <MicIcon>Filled</MicIcon>
                             Input device
                         </p>
-                        <Dropdown onSelected={v => handleAudioInputSelection(v)} selected={settings.audioInput} options={[...audioSources.map((source) => {
+                        <Dropdown onSelected={v => handleAudioInputSelection(v)} selected={state.audioInput} options={[...audioSources.map((source) => {
                             return {
                                 text: source.label,
                                 value: source.deviceId
@@ -157,7 +150,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
                             <HeadsetIcon>Filled</HeadsetIcon>
                             Output device
                         </p>
-                        <Dropdown onSelected={v => handleAudioOutputSelection(v)} selected={settings.audioOutput} options={[...audioOutputSources.map((source) => {
+                        <Dropdown onSelected={v => handleAudioOutputSelection(v)} selected={state.audioOutput} options={[...audioOutputSources.map((source) => {
                             return {
                                 text: source.label,
                                 value: source.deviceId
@@ -176,7 +169,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
                     <VideocamIcon>Filled</VideocamIcon>
                     Input device
                 </p>
-                <Dropdown margin="0 0 2em 0" onSelected={v => handleVideoSelection(v)} selected={settings.videoInput} options={[...videoSources.map((source) => {
+                <Dropdown margin="0 0 2em 0" onSelected={v => handleVideoSelection(v)} selected={state.videoInput} options={[...videoSources.map((source) => {
                     return {
                         text: source.label,
                         value: source.deviceId

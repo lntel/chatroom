@@ -1,4 +1,4 @@
-type Action = | {
+export type Action = | {
     type: 'UPDATE_VIDEO_INPUT',
     deviceId: string
 } | {
@@ -11,10 +11,10 @@ type Action = | {
     type: 'CLEAR_SETTINGS'
 }
 
-interface State {
-    audioInput: string
-    audioOutput: string
-    videoInput: string
+export interface State {
+    audioInput: string | undefined
+    audioOutput: string | undefined
+    videoInput: string | undefined
 }
 
 export const settingsReducer = (state: State, action: Action) => {

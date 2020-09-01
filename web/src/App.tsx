@@ -1,12 +1,15 @@
 import React from 'react'
 import { Route, Switch } from 'react-router';
+import SettingsContextProvider from './context/SettingsContext';
 import Main from './pages/Main';
 
 const App = () => {
     return (
-        <Switch>
-            <Route to="/" component={Main} />
-        </Switch>
+        <SettingsContextProvider>
+            <Switch>
+                <Route to="/" component={Main} />
+            </Switch>
+        </SettingsContextProvider>
     );
 }
 
