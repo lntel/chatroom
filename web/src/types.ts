@@ -14,6 +14,7 @@ export interface ChatMessage {
     id: string
     content: string
     system: boolean
+    image?: string
     user: User
     postedDate: number | string | Date
 }
