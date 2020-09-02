@@ -15,6 +15,8 @@
     }
 
     &__header {
+        display: flex;
+        align-items: center;
         color: $brand;
         font-weight: 400;
         font-size: 1.2rem;
