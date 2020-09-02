@@ -15,7 +15,7 @@ const Video: FC<VideoProps> = ({ stream, onStreamEnded, user }) => {
     useEffect(() => {
         videoRef.current!.srcObject = stream;
 
-        stream.getTracks()[0].onended = function(e) {
+        stream.getVideoTracks()[0].onended = function(e) {
             onStreamEnded(user.peerId)
         }
 
