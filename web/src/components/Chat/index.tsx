@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { ChatMessage } from '../../types'
 import { SlideInRight } from '../Transitions'
 import FileInput from '../FileInput'
@@ -13,6 +13,24 @@ interface ChatProps {
 
 const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
     const [messageInput, setMessageInput] = useState<string>('');
+    
+    const bottomChat = useRef<HTMLDivElement>(null);
+    const chatContainer = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        scrollToChat();
+    }, [messages]);
+
+    useEffect(() => {
+        chatContainer.current?.scrollTo(0, chatContainer.current?.scrollHeight!)
+    }, [visible]);
+    
+    const scrollToChat = () => {
+        bottomChat.current?.scrollIntoView({
+            behavior: "smooth"
+        });
+    }
+
 
     const handleMessageSend = () => {
         onMessage(messageInput);
@@ -25,7 +43,7 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
     return (
         <SlideInRight state={visible}>
             <div className="chat">
-                <div className="chat__container">
+                <div className="chat__container" ref={chatContainer}>
                     { messages && messages.length ? messages.map(message =>
                         <>
                         { message.image ? (
@@ -44,6 +62,7 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
                         ) }
                         </>
                     ) : null }
+                    <div ref={bottomChat}></div>
                 </div>
                 <div className="chat__input">
                     <FileInput format="images" onSelection={e => onFilesSelected(e)} />
