@@ -5,9 +5,9 @@
 
 version: 2
 updates:
-  - package-ecosystem: "javascript" # See documentation for possible values
+  - package-ecosystem: "npm" # See documentation for possible values
     directory: "/web" # Location of package manifests
-    update_schedule: "live"
+    schedule: "live"
     default_labels:
       - "dependencies"
       - "dependabot"
