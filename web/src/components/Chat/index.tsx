@@ -28,19 +28,19 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
                 <div className="chat__container">
                     { messages && messages.length ? messages.map(message =>
                         <>
-                        { message.system ? (
-                            <div className="chat__system-message">
-                                <p>testing</p>
+                        { message.image ? (
+                            <div className={message.user.self ? "chat__message chat__message--self" : "chat__message"}>
+                                <img src={message.image} alt=""/>
                             </div>
                         ) : (
-                        <div className={message.user.self ? "chat__message chat__message--self" : "chat__message"}>
-                            <span className="chat__message__nickname">
-                                { message.user.nickname }
-                            </span>
-                            <p>
-                                { message.content }
-                            </p>
-                        </div> 
+                            <div className={message.user.self ? "chat__message chat__message--self" : "chat__message"}>
+                                <span className="chat__message__nickname">
+                                    { message.user.nickname }
+                                </span>
+                                <p>
+                                    { message.content }
+                                </p>
+                            </div>
                         ) }
                         </>
                     ) : null }

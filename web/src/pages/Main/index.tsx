@@ -173,8 +173,22 @@ const Main = () => {
         });
 
         client.on(ClientEvents.sendMessage, (message: ChatMessage) => {
+            const imageUrlEx = /(?:http(?:s)?\:\/\/)(?:www\.)?[a-zA-Z0-9.]{2,256}\.[a-z]{2,6}[a-zA-Z0-9\/\-\.\_]+(?:jpg|png)/g;
 
             if(message.user.nickname === nickname) message.user.self = true;
+
+            const imageUrl = message.content.match(imageUrlEx);
+
+            if(imageUrl) {
+                return setMessages(oldMessages => [
+                    ...oldMessages,
+                    {
+                        ...message,
+                        content: '',
+                        image: message.content
+                    }
+                ]);
+            }
 
             setMessages(oldMessages => [
                 ...oldMessages,
