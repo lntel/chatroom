@@ -10,6 +10,7 @@ import VideocamIcon from '@material-ui/icons/Videocam';
 
 import { settingsReducer } from '../../reducers/settings';
 import { SettingsContext } from '../../context/SettingsContext';
+import Toggle from '../Toggle';
 
 interface SettingsModalProps {
     visible: boolean
@@ -182,6 +183,19 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
                         value: source.deviceId
                     }
                 })]} 
+                />
+                <h2 className="settings-modal__header">
+                    Image Resolver
+                </h2>
+                <p className="settings-modal__video-description">
+                    Our image resolver when enabled preloads images from URL's that are posted in chat, this feature is currently insecure.
+                </p>
+                <Toggle 
+                onToggle={e => dispatch({
+                    type: 'UPDATE_IMG_RESOLVER', 
+                    value: e 
+                })} 
+                toggled={state.imageResolver} 
                 />
                 <button className="settings-modal__close" onClick={() => onClose()}>
                     Close
