@@ -139,7 +139,7 @@ const Main = () => {
     }
 
     const onMessageRecieved = (message: ChatMessage) => {
-        const imageUrlEx = /(?:http(?:s)?\:\/\/)(?:www\.)?[a-zA-Z0-9.]{2,256}\.[a-z]{2,6}[a-zA-Z0-9\/\-\.\_]+(?:jpg|png)/g;
+        const imageUrlEx = /(?:http(?:s)?\:\/\/)(?:www\.)?[a-zA-Z0-9.]{2,256}\.[a-z]{2,6}[a-zA-Z0-9\/\-\.\_\*]+(?:jpg|png)/g;
         const domainEx = /(?:http(?:s)?\:\/\/(?:www\.)?)([a-zA-Z0-9\.\-]{2,253})(?:\.[a-zA-Z]{2,4})/g;
 
         if(message.user.nickname === nickname) message.user.self = true;
