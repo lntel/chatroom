@@ -10,3 +10,8 @@ updates:
   target-branch: "dev"
   schedule:
     interval: daily
+- package-ecosystem: npm
+  directory: "/server"
+  target-branch: "dev"
+  schedule:
+    interval: daily
