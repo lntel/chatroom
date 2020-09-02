@@ -48,6 +48,11 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
                         <>
                         { message.image ? (
                             <div className={message.user.self ? "chat__message chat__message--self" : "chat__message"}>
+                                { !message.user.self ? (
+                                    <span className="chat__message__nickname">
+                                        { message.user.nickname }
+                                    </span>
+                                ) : null }
                                 <img src={message.image} alt=""/>
                             </div>
                         ) : (
