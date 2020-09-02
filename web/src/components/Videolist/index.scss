@@ -27,6 +27,12 @@
         background: $darker;
         border-radius: .2em;
         position: relative;
+        border: 1px solid transparent;
+        transition: border .3s ease-in-out;
+
+        &--speaking {
+            border: 1px solid $brand;
+        }
 
         &:hover &__data {
             transition: opacity .3s ease-in;
