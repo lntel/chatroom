@@ -1,5 +1,5 @@
 import Peer, { MediaConnection } from 'peerjs'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import io, { Socket } from 'socket.io-client'
 import Chat from '../../components/Chat'
 import Controls from '../../components/Controls'
@@ -13,6 +13,7 @@ import ReconnectModal from '../../components/ReconnectModal'
 import './index.scss'
 
 import { UserStream, ClientEvents, User, ChatMessage } from '../../types'
+import { SettingsContext } from '../../context/SettingsContext'
 
 const Main = () => {
     const [settingsVisible, setSettingsVisible] = useState<boolean>(false);
@@ -29,6 +30,12 @@ const Main = () => {
     const [localStream, setLocalStream] = useState<MediaStream | null>(null);
 
     const peer = useRef<Peer>(new Peer());
+
+    const { state, dispatch } = useContext(SettingsContext);
+
+    const allowedDomains = [
+
+    ];
 
     const handlePeerCall = (call: MediaConnection) => {
         try {
@@ -131,6 +138,32 @@ const Main = () => {
         ]);
     }
 
+    const onMessageRecieved = (message: ChatMessage) => {
+        const imageUrlEx = /(?:http(?:s)?\:\/\/)(?:www\.)?[a-zA-Z0-9.]{2,256}\.[a-z]{2,6}[a-zA-Z0-9\/\-\.\_]+(?:jpg|png)/g;
+        const domainEx = /(?:http(?:s)?\:\/\/(?:www\.)?)([a-zA-Z0-9\.\-]{2,253})(?:\.[a-zA-Z]{2,4})/g;
+
+        if(message.user.nickname === nickname) message.user.self = true;
+
+        const imageUrl = message.content.match(imageUrlEx);
+        //const domain = message.content.match(domainEx);
+
+        if(imageUrl && state.imageResolver) {
+            return setMessages(oldMessages => [
+                ...oldMessages,
+                {
+                    ...message,
+                    content: '',
+                    image: message.content
+                }
+            ]);
+        }
+
+        setMessages(oldMessages => [
+            ...oldMessages,
+            message
+        ]);
+    }
+
     useEffect(() => {
 
         if(peer.current) {
@@ -141,6 +174,7 @@ const Main = () => {
             socket.on(ClientEvents.userJoined, onUserJoined);
             socket.on(ClientEvents.userLeft, onUserLeft);
             socket.on(ClientEvents.userStreamStop, onStreamStopped);
+            socket.on(ClientEvents.sendMessage, onMessageRecieved);
         }
 
 
@@ -149,8 +183,9 @@ const Main = () => {
             socket?.off(ClientEvents.userJoined, onUserJoined);
             socket?.off(ClientEvents.userLeft, onUserLeft);
             socket?.off(ClientEvents.userStreamStop, onStreamStopped);
+            socket?.off(ClientEvents.sendMessage, onMessageRecieved);
         }
-    }, [users, localStream, socket, streams]);
+    }, [users, localStream, socket, streams, state]);
 
     useEffect(() => {
         const client = io('http://localhost:4000');
@@ -169,30 +204,6 @@ const Main = () => {
             setUsers(oldUsers => [
                 ...oldUsers,
                 ...clients
-            ]);
-        });
-
-        client.on(ClientEvents.sendMessage, (message: ChatMessage) => {
-            const imageUrlEx = /(?:http(?:s)?\:\/\/)(?:www\.)?[a-zA-Z0-9.]{2,256}\.[a-z]{2,6}[a-zA-Z0-9\/\-\.\_]+(?:jpg|png)/g;
-
-            if(message.user.nickname === nickname) message.user.self = true;
-
-            const imageUrl = message.content.match(imageUrlEx);
-
-            if(imageUrl) {
-                return setMessages(oldMessages => [
-                    ...oldMessages,
-                    {
-                        ...message,
-                        content: '',
-                        image: message.content
-                    }
-                ]);
-            }
-
-            setMessages(oldMessages => [
-                ...oldMessages,
-                message
             ]);
         });
 
