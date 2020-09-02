@@ -7,11 +7,15 @@ version: 2
 updates:
 - package-ecosystem: npm
   directory: "/web"
+  default_reviewers:
+    - "ChrisF999"
   target-branch: "dev"
   schedule:
     interval: daily
 - package-ecosystem: npm
   directory: "/server"
+  default_reviewers:
+    - "ChrisF999"
   target-branch: "dev"
   schedule:
     interval: daily
