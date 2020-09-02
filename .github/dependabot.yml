@@ -8,7 +8,4 @@ updates:
 - package-ecosystem: npm
   directory: "/web"
   schedule:
-    interval: live
-    default_labels:
-      - "dependencies"
-      - "dependabot"
+    interval: daily
