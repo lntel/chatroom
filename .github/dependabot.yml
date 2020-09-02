@@ -9,3 +9,4 @@ updates:
   directory: "/web"
   schedule:
     interval: daily
+  target_branch: "dev"
