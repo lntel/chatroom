@@ -30,6 +30,10 @@
         margin: 0 0 1em 0;
         padding: 1em;
 
+        img {
+            width: 100%;
+        }
+
         &__nickname {
             color: $brand;
         }
