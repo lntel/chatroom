@@ -1,0 +1,35 @@
+@import '../../global';
+
+.toggle {
+    width: 90px;
+    height: 50px;
+    background: $dark;
+    border-radius: 2em;
+    padding: 5px;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+
+    &--enabled {
+        background: $brand;
+    }
+
+    &__box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        height: 100%;
+        background: $brand;
+        border-radius: 50%;
+        transition: all .3s ease-in-out;
+
+        svg {
+            color: $brand;
+        }
+
+        &--enabled {
+            transform: translateX(100%);
+            background: $dark;
+        }
+    }
+}
