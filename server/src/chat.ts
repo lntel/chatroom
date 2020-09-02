@@ -133,7 +133,7 @@ class Chat {
 
         client.on(ClientEvents.sendMessage, (message: string) => {
 
-            if(!message.match(/^[ -~]+$/g)) return;
+            if(message.match(/([ -][\p{Mn}\p{Me}]+)/u)) return;
 
             this.server.emit(ClientEvents.sendMessage, {
                 content: message,
