@@ -47,6 +47,13 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
                 deviceId: audioOutputSources[0].deviceId
             });
         }
+
+        if(!state.imageResolver) {
+            dispatch({
+                type: 'UPDATE_IMG_RESOLVER',
+                value: false
+            });
+        }
     }, [videoSources, audioSources, audioOutputSources]);
 
     useEffect(() => {
