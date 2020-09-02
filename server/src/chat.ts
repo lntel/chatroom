@@ -135,13 +135,10 @@ class Chat {
         });
 
         client.on(ClientEvents.sendMessage, (message: string) => {
-<<<<<<< Updated upstream
+
 
             if(message.match(/([ -][\p{Mn}\p{Me}]+)/u)) return;
-=======
-console.log(message.match(/^[ -~]+$/g))
-            if(!message.match(/^[ -~]+$/g)) return;
->>>>>>> Stashed changes
+
 
             this.server.emit(ClientEvents.sendMessage, {
                 content: message,
