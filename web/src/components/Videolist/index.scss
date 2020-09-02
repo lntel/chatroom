@@ -2,7 +2,7 @@
 
 .videolist {
     width: calc(100% - 1em);
-    height: 100%;
+    height: calc(100% - 1em);
     grid-column: 2 / 13;
     grid-row: 1 / 13;
     padding: .5em;
@@ -13,17 +13,17 @@
     grid-gap: .5em;
 
     &--2 {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 50%);
     }
 
     &--3 {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 50%);
+        grid-template-rows: repeat(2, 50%);
     }
 
     &__video {
         width: 100%;
-        height: calc(100% - 1em);
+        height: 100%;
         background: $darker;
         border-radius: .2em;
         position: relative;
