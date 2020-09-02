@@ -11,7 +11,8 @@ export const SettingsContext = createContext<SettingsContextProps>({
     state: {
         audioInput: undefined,
         audioOutput: undefined,
-        videoInput: undefined
+        videoInput: undefined,
+        imageResolver: false
     },
     dispatch: () => {}
 });
