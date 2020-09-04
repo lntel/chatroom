@@ -7,6 +7,7 @@ import Dropdown from '../Dropdown';
 import MicIcon from '@material-ui/icons/Mic';
 import HeadsetIcon from '@material-ui/icons/Headset';
 import VideocamIcon from '@material-ui/icons/Videocam';
+import WarningIcon from '@material-ui/icons/Warning';
 
 import { settingsReducer } from '../../reducers/settings';
 import { SettingsContext } from '../../context/SettingsContext';
@@ -185,12 +186,16 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
                 })]} 
                 />
                 <h2 className="settings-modal__header">
+                    <WarningIcon style={{margin: '0 7px 0 0'}}>Filled</WarningIcon>
                     Image Resolver
                 </h2>
                 <p className="settings-modal__video-description">
                     Our image resolver when enabled preloads images from URL's that are posted in chat, this feature is currently insecure.
                 </p>
                 <Toggle 
+                style={{
+                    margin: '0 0 1em 0'
+                }}
                 onToggle={e => dispatch({
                     type: 'UPDATE_IMG_RESOLVER', 
                     value: e 

@@ -11,14 +11,16 @@ import Userlist from '../../components/Userlist'
 import Videolist from '../../components/Videolist'
 import ReconnectModal from '../../components/ReconnectModal'
 import './index.scss'
-
+import config from '../../config';
 import { UserStream, ClientEvents, User, ChatMessage } from '../../types'
 import { SettingsContext } from '../../context/SettingsContext'
+import ConnectionModal from '../../components/ConnectionModal'
 
 const Main = () => {
     const [settingsVisible, setSettingsVisible] = useState<boolean>(false);
     const [userlistVisible, setUserlistVisible] = useState<boolean>(false);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [connectionModal, setConnectionModal] = useState<boolean>(true);
     const [reconnectVisible, setReconnectVisible] = useState<boolean>(false);
     const [chatVisible, setChatVisible] = useState<boolean>(false);
     const [muted, setMuted] = useState<boolean>(false);
@@ -133,13 +135,23 @@ const Main = () => {
             setLocalStream(null);
         }
 
+        console.log(users.find(user => user.peerId === id))
+
+        setUsers(oldUsers => [
+            ...oldUsers.filter(user => user.peerId === id),
+            {
+                ...oldUsers.find(user => user.peerId === id)!,
+                streaming: false
+            }
+        ]);
+
         setStreams(oldStreams => [
             ...oldStreams.filter(stream => stream.user.peerId !== id)
         ]);
     }
 
     const onMessageRecieved = (message: ChatMessage) => {
-        const imageUrlEx = /(?:http(?:s)?\:\/\/)(?:www\.)?[a-zA-Z0-9.]{2,256}\.[a-z]{2,6}[a-zA-Z0-9\/\-\.\_]+(?:jpg|png)/g;
+        const imageUrlEx = /(?:http(?:s)?\:\/\/)(?:www\.)?[a-zA-Z0-9.]{2,256}\.[a-z]{2,6}[a-zA-Z0-9\/\-\.\_\*]+(?:jpg|png)/g;
         const domainEx = /(?:http(?:s)?\:\/\/(?:www\.)?)([a-zA-Z0-9\.\-]{2,253})(?:\.[a-zA-Z]{2,4})/g;
 
         if(message.user.nickname === nickname) message.user.self = true;
@@ -188,11 +200,12 @@ const Main = () => {
     }, [users, localStream, socket, streams, state]);
 
     useEffect(() => {
-        const client = io('http://localhost:4000');
+        const client = io(config.webSocketURL);
     
         setSocket(client);
 
         client.on('connect', () => {
+            setConnectionModal(false);
             setModalVisible(true);
         });
 
@@ -400,6 +413,7 @@ const Main = () => {
                     </button>
                 </Form>
             </Modal>
+            <ConnectionModal visible={connectionModal} />
         </div>
     )
 }

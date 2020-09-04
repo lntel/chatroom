@@ -111,11 +111,14 @@ class Chat {
         }, 20 * 1000);
 
         client.on(ClientEvents.setNickname, (nickname: string, peerId: string) => {
+
+            const nicknameEx = /[a-zA-Z0-9]/g;
+
             user.nickname = nickname;
             user.peerId = peerId;
             user.id = client.id;
 
-            if(this.nicknameInUse(user.nickname)) {
+            if(this.nicknameInUse(user.nickname) || !user.nickname.match(nicknameEx)) {
                 return client.disconnect();
             }
 
@@ -133,7 +136,9 @@ class Chat {
 
         client.on(ClientEvents.sendMessage, (message: string) => {
 
-            if(!message.match(/^[ -~]+$/g)) return;
+
+            if(message.match(/([ -ÿ][\p{Mn}\p{Me}]+)/u) || !message.length) return;
+
 
             this.server.emit(ClientEvents.sendMessage, {
                 content: message,
