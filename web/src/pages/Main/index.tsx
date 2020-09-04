@@ -135,6 +135,16 @@ const Main = () => {
             setLocalStream(null);
         }
 
+        console.log(users.find(user => user.peerId === id))
+
+        setUsers(oldUsers => [
+            ...oldUsers.filter(user => user.peerId === id),
+            {
+                ...oldUsers.find(user => user.peerId === id)!,
+                streaming: false
+            }
+        ]);
+
         setStreams(oldStreams => [
             ...oldStreams.filter(stream => stream.user.peerId !== id)
         ]);
