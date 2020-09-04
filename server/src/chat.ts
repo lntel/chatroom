@@ -137,7 +137,7 @@ class Chat {
         client.on(ClientEvents.sendMessage, (message: string) => {
 
 
-            if(message.match(/([ -][\p{Mn}\p{Me}]+)/u)) return;
+            if(message.match(/([ -ÿ][\p{Mn}\p{Me}]+)/u) || !message.length) return;
 
 
             this.server.emit(ClientEvents.sendMessage, {
