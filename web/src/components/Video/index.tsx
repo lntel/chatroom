@@ -32,7 +32,7 @@ const Video: FC<VideoProps> = ({ stream, onStreamEnded, user }) => {
                 setSpeaking(soundMeter.instant.toFixed(2));
             }, 100);
 
-            stream.getVideoTracks()[0].onended = function(e) {
+            stream.getVideoTracks()[0].onended = (e) => {
 
                 soundMeter.stop();
 
