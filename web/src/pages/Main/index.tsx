@@ -14,11 +14,13 @@ import './index.scss'
 
 import { UserStream, ClientEvents, User, ChatMessage } from '../../types'
 import { SettingsContext } from '../../context/SettingsContext'
+import ConnectionModal from '../../components/ConnectionModal'
 
 const Main = () => {
     const [settingsVisible, setSettingsVisible] = useState<boolean>(false);
     const [userlistVisible, setUserlistVisible] = useState<boolean>(false);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [connectionModal, setConnectionModal] = useState<boolean>(true);
     const [reconnectVisible, setReconnectVisible] = useState<boolean>(false);
     const [chatVisible, setChatVisible] = useState<boolean>(false);
     const [muted, setMuted] = useState<boolean>(false);
@@ -193,6 +195,7 @@ const Main = () => {
         setSocket(client);
 
         client.on('connect', () => {
+            setConnectionModal(false);
             setModalVisible(true);
         });
 
@@ -400,6 +403,7 @@ const Main = () => {
                     </button>
                 </Form>
             </Modal>
+            <ConnectionModal visible={connectionModal} />
         </div>
     )
 }
