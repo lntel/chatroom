@@ -5,9 +5,10 @@ before_script:
   - cd web
   - yarn
 script:
-  - tsc
+  - yarn build -ci false
   - cd ../server
   - yarn
   - tsc
 cache:
   yarn: true
+  
