@@ -11,7 +11,7 @@ import Userlist from '../../components/Userlist'
 import Videolist from '../../components/Videolist'
 import ReconnectModal from '../../components/ReconnectModal'
 import './index.scss'
-
+import config from '../../config';
 import { UserStream, ClientEvents, User, ChatMessage } from '../../types'
 import { SettingsContext } from '../../context/SettingsContext'
 import ConnectionModal from '../../components/ConnectionModal'
@@ -190,7 +190,7 @@ const Main = () => {
     }, [users, localStream, socket, streams, state]);
 
     useEffect(() => {
-        const client = io('http://localhost:4000');
+        const client = io(config.webSocketURL);
     
         setSocket(client);
 
