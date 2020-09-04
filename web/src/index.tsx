@@ -1,6 +1,7 @@
 import React, { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import './index.scss'
+import * as serviceWorker from './serviceWorker';
 
 import { BrowserRouter as Router } from 'react-router-dom'
 
@@ -13,3 +14,5 @@ ReactDOM.render(
         </Router>
     </StrictMode>
 , document.getElementById('root'));
+
+serviceWorker.register();

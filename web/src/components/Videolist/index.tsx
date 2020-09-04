@@ -1,4 +1,3 @@
-import { CSSProperties } from '@material-ui/core/styles/withStyles'
 import React, { FC, useEffect, useState } from 'react'
 import { UserStream } from '../../types'
 import Video from '../Video'
