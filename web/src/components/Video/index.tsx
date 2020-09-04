@@ -32,6 +32,7 @@ const Video: FC<VideoProps> = ({ stream, onStreamEnded, user }) => {
                 setSpeaking(soundMeter.instant.toFixed(2));
             }, 100);
 
+            // Triggered on stream dead
             stream.getVideoTracks()[0].onended = (e) => {
 
                 soundMeter.stop();
