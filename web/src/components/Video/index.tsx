@@ -18,6 +18,7 @@ const Video: FC<VideoProps> = ({ stream, onStreamEnded, user }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
+        let interval: NodeJS.Timeout;
         videoRef.current!.srcObject = stream;
         
         const audioContext = new AudioContext();
@@ -27,11 +28,11 @@ const Video: FC<VideoProps> = ({ stream, onStreamEnded, user }) => {
         soundMeter.connectToSource(stream, (e) => {
             if(e) return console.error(e);
 
-            const interval = setInterval(() => {
+            interval = setInterval(() => {
                 setSpeaking(soundMeter.instant.toFixed(2));
             }, 100);
 
-            stream.getVideoTracks()[0].onended = function(e) {
+            stream.getVideoTracks()[0].onended = (e) => {
 
                 soundMeter.stop();
 
@@ -40,7 +41,10 @@ const Video: FC<VideoProps> = ({ stream, onStreamEnded, user }) => {
                 onStreamEnded(user.peerId)
             }
         })
-        
+
+        return () => {
+            clearInterval(interval);
+        }
     }, []);
 
     return (
