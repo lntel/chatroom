@@ -7,4 +7,10 @@ export interface Client {
     socket?: Socket
 }
 
+export interface markdownExpressions {
+    [index: string]: RegExp
+    bold: RegExp
+    italic: RegExp
+}
+
 export type ClientEvent = | 'set:username' | 'test'
