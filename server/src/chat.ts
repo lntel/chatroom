@@ -1,7 +1,7 @@
 import { Server } from 'http';
 import io, { Server as IOServer, Socket } from 'socket.io'
 
-import { Client } from './types'
+import { Client, markdownExpressions } from './types'
 
 enum ClientEvents {
     setNickname = 'set:nickname',
@@ -139,9 +139,27 @@ class Chat {
 
             if(message.match(/([ -ÿ][\p{Mn}\p{Me}]+)/u) || !message.length) return;
 
+            let markdown;
+
+            const markdownExpressions: markdownExpressions = {
+                italic: /^\*{1}([A-z0-9 ]+)\*{1}$/,
+                bold: /^\*{2}([A-z0-9 ]+)\*{2}$/
+            };
+
+            Object.keys(markdownExpressions).map(key => {
+
+                const result = message.match(markdownExpressions[key]);
+
+                if(result) {
+                    markdown = key;
+                    message = result[1];
+                }
+            });
+
 
             this.server.emit(ClientEvents.sendMessage, {
                 content: message,
+                markdown: markdown,
                 user: {
                     nickname: user.nickname,
                     peerId: user.peerId,
