@@ -39,6 +39,25 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
     const onFilesSelected = (files: FileList) => {
         console.log(files)
     }
+
+    const markdownSwitch = (message: ChatMessage) => {
+        switch(message.markdown) {
+            case 'italic':
+                return (
+                    <i>
+                        { message.content }
+                    </i>
+                )
+            case 'bold':
+                return (
+                    <b>
+                        { message.content }
+                    </b>
+                )
+            default:
+                return message.content;
+        }
+    }
     
     return (
         <SlideInRight state={visible}>
@@ -63,7 +82,7 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
                                     </span>
                                 ) : null }
                                 <p>
-                                    { message.content }
+                                    { markdownSwitch(message) }
                                 </p>
                             </div>
                         ) }
