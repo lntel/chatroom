@@ -15,6 +15,7 @@ export interface ChatMessage {
     content: string
     system: boolean
     image?: string
+    markdown?: 'italic' | 'bold'
     user: User
     postedDate: number | string | Date
 }
