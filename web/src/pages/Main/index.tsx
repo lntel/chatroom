@@ -135,10 +135,8 @@ const Main = () => {
             setLocalStream(null);
         }
 
-        console.log(users.find(user => user.peerId === id))
-
         setUsers(oldUsers => [
-            ...oldUsers.filter(user => user.peerId === id),
+            ...oldUsers.filter(user => user.peerId !== id),
             {
                 ...oldUsers.find(user => user.peerId === id)!,
                 streaming: false
@@ -151,7 +149,7 @@ const Main = () => {
     }
 
     const onMessageRecieved = (message: ChatMessage) => {
-        const imageUrlEx = /(?:http(?:s)?\:\/\/)(?:www\.)?[a-zA-Z0-9.]{2,256}\.[a-z]{2,6}[a-zA-Z0-9\/\-\.\_\*]+(?:jpg|png)/g;
+        const imageUrlEx = /(?:http(?:s)?\:\/\/)(?:www\.)?[\w\.\-\/\d\%]+\.(?:jp(?:e)?g|png|gif)(?:\?.+)?/g;
         const domainEx = /(?:http(?:s)?\:\/\/(?:www\.)?)([a-zA-Z0-9\.\-]{2,253})(?:\.[a-zA-Z]{2,4})/g;
 
         if(message.user.nickname === nickname) message.user.self = true;
@@ -349,14 +347,6 @@ const Main = () => {
     const handleLocalStreamEnd = () => {
         setLocalStream(null);
         setMuted(false);
-
-        setUsers(oldUsers => [
-            ...oldUsers.filter(user => user.nickname !== nickname),
-            {
-                ...oldUsers.find(user => user.nickname === nickname)!,
-                streaming: false
-            }
-        ]);
 
         setStreams(oldStreams => [
             ...oldStreams.filter(stream => stream.user.peerId !== peer.current.id)
