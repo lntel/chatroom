@@ -2,6 +2,7 @@ import React, { FC, useEffect } from 'react'
 import './index.scss'
 
 import { CSSProperties } from '@material-ui/core/styles/withStyles'
+import { SvgIconComponent } from '@material-ui/icons'
 import { FadeIn } from '../Transitions'
 
 export interface SelectionModalCoords {
@@ -10,7 +11,10 @@ export interface SelectionModalCoords {
 }
 
 export interface SelectionModalItem {
-
+    text: string
+    serious?: boolean
+    icon?: SvgIconComponent
+    onClickCallback: () => void
 }
 
 interface SelectionModalProps {
@@ -20,7 +24,7 @@ interface SelectionModalProps {
     onUnfocus: () => void
 }
 
-const SelectionModal: FC<SelectionModalProps> = ({ visible, coords, onUnfocus }) => {
+const SelectionModal: FC<SelectionModalProps> = ({ visible, coords, onUnfocus, items }) => {
 
     const style: CSSProperties = {
         position: 'absolute',
@@ -57,7 +61,14 @@ const SelectionModal: FC<SelectionModalProps> = ({ visible, coords, onUnfocus })
     return (
         <FadeIn state={visible}>
             <div className="selection-modal" style={style}>
-                test
+                { items && items.length && items.map(item =>
+                    <div className={item.serious ? "selection-modal__option selection-modal__option--serious" : "selection-modal__option"} onClick={item.onClickCallback}>
+                        <div className="selection-modal__option__icon">
+                            { item.icon ? <item.icon>Filled</item.icon> : null }
+                        </div>
+                        { item.text }
+                    </div>
+                ) }
             </div>
         </FadeIn>
     )

@@ -7,6 +7,8 @@ import FileInput from '../FileInput'
 import Textbox from '../Textbox'
 
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import CodeIcon from '@material-ui/icons/Code';
+
 import SelectionModal, { SelectionModalCoords } from '../SelectionModal'
 
 interface ChatProps {
@@ -72,13 +74,28 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
         setModalVisible(true);
         setModalCoords({
             y: e.clientY + 20,
-            x: e.clientX - 60
+            x: e.clientX - 270
         });
+    }
+
+    const handleTestClick = () => {
+        console.log("ytest")
     }
     
     return (
         <>
-            <SelectionModal visible={modalVisible} coords={modalCoords} onUnfocus={() => setModalVisible(false)} />
+            <SelectionModal 
+            visible={modalVisible} 
+            coords={modalCoords} 
+            onUnfocus={() => setModalVisible(false)} 
+            items={[
+                {
+                    text: 'Insert Code',
+                    icon: CodeIcon,
+                    onClickCallback: handleTestClick
+                }
+            ]}
+            />
             <SlideInRight state={visible}>
                 <div className="chat">
                     <div className="chat__topbar">
