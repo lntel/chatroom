@@ -1,0 +1,9 @@
+@import '../../global';
+
+.syntax-modal {
+    select {
+        background: $dark;
+        color: $brand;
+        min-width: 250px;
+    }
+}
