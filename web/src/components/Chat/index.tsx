@@ -24,6 +24,7 @@ interface ChatProps {
 const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
     const [messageInput, setMessageInput] = useState<string>('');
     const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [syntaxModal, setSyntaxModal] = useState<boolean>(false);
     const [modalCoords, setModalCoords] = useState<SelectionModalCoords>({
         x: 0,
         y: 0
@@ -96,11 +97,14 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
                 {
                     text: 'Insert Code',
                     icon: CodeIcon,
-                    onClickCallback: handleTestClick
+                    onClickCallback: () => {
+                        setModalVisible(false);
+                        setSyntaxModal(true);
+                    }
                 }
             ]}
             />
-            <SyntaxModal visible={false} />
+            <SyntaxModal visible={syntaxModal} />
             <SlideInRight state={visible}>
                 <div className="chat">
                     <div className="chat__topbar">
