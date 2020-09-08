@@ -27,7 +27,20 @@ const Main = () => {
     const [socket, setSocket] = useState<typeof Socket | null>(null);
     const [streams, setStreams] = useState<UserStream[]>([]);
     const [users, setUsers] = useState<User[]>([]);
-    const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [messages, setMessages] = useState<ChatMessage[]>([
+        {
+            content: 'const testing = 1;',
+            codeLanguage: 'javascript',
+            postedDate: new Date(),
+            id: 'testi',
+            system: false,
+            user: {
+                nickname: 'test',
+                streaming: false,
+                peerId: '4382942309'
+            }
+        }
+    ]);
     const [nickname, setNickname] = useState<string>('');
     const [localStream, setLocalStream] = useState<MediaStream | null>(null);
 
