@@ -11,9 +11,3 @@ script:
 - tsc
 cache:
   yarn: true
-
-if: branch = master
-  deploy:
-  provider: heroku
-   api_key:
-      secure: hMKdKt79aq0klXCJCyAo5SDDStGVNkL7YMjPUU9b931vrRWWO226e1X290aUYb/LNc98X69N6428sTBG0YCRrG1vkqZ2NrDJE6r9D07sBmHd0a0NnJ8y6yvagvNvMdE+80liWZ6K2NU0k53zfRet5rgNoXSKlK3xK14TeUIUstIUW5fvGGvIDJkO9lV855dxFk8/VypfjanqdU0a3xyn2rAtLBjmIYcPr/6WnvhS8dpJYKDxaLMvQhIj4iKr9DwmqtOKJHf2oI9vFHUvU8kQ29uYIuH63GO4SuZl8IXr5AVrJAdBduv/PZVyCw3hkMqS+JcqXi6k/iwmccjJ3cDdGwUQit4fygbfqJ/g8UkkVAYm9q+WExhUjzv5gi8qwUljw2dr8s2tdoct6Gd/uzG46nqWw2z8aj7CUbuBb6U64cvx15E8HZkg5VfTH50ebal1/ths/pwqOCkF4VqINjTZizPl6NDp7yDtr7raripDcUUN0LL1Xu8S7Fpb6HQSsPSFv4M6PhSRc/JZoAVxVK4s/KR/0I8/WKCTWyuu0nESVRYSOaLziSJWTH+T0mWVStJO0XCxnw+YULZ+nQTQwy/p9naAmopk//9S8YOPVA47VWx0mLiEykC3n06a58demKR4nMWBGVv1RwcyDQKvt/YMancogOwES2eibxJHHbMJfqE=
