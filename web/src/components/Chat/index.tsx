@@ -104,7 +104,7 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
                 }
             ]}
             />
-            <SyntaxModal visible={syntaxModal} />
+            <SyntaxModal visible={syntaxModal} onUnfocus={() => setSyntaxModal(false)} />
             <SlideInRight state={visible}>
                 <div className="chat">
                     <div className="chat__topbar">
@@ -138,9 +138,16 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
                                 ) }
                                 </>
                             ) : (
-                                <SyntaxHighlighter language={message.codeLanguage} style={atomDark}>
-                                    { message.content }
-                                </SyntaxHighlighter>
+                                <div className={message.user.self ? "chat__message chat__message--self" : "chat__message"}>
+                                    { !message.user.self ? (
+                                        <span className="chat__message__nickname">
+                                            { message.user.nickname }
+                                        </span>
+                                    ) : null }
+                                    <SyntaxHighlighter language={message.codeLanguage} style={atomDark}>
+                                        { message.content }
+                                    </SyntaxHighlighter>
+                                </div>
                             ) }
                             </>
                         ) : null }
