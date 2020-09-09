@@ -2,8 +2,6 @@ import dotenv from 'dotenv'
 
 dotenv.config();
 
-const config = {
-    webSocketURL: process.env.WEBSOCKETURL || 'http://localhost:4000',
-}
-
-export default config;
+export default {
+    webSocketURL: 'http://localhost:4000' || 'https://lntelchat.herokuapp.com/',
+};
