@@ -15,6 +15,7 @@ export interface ChatMessage {
     content: string
     system: boolean
     image?: string
+    codeLanguage?: string
     markdown?: 'italic' | 'bold'
     user: User
     postedDate: number | string | Date
@@ -25,6 +26,7 @@ export type Colors = | '#383C4A' | '#404552' | '#4B5162' | '#7C818C' | '#f3f3f3'
 export enum ClientEvents {
     setNickname = 'set:nickname',
     sendMessage = 'send:message',
+    sendCode = 'send:code',
     userJoined = 'user:joined',
     userLeft = 'user:left',
     userList = 'user:list',

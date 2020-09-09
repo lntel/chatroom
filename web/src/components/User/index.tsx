@@ -17,8 +17,15 @@ export interface OnSelectCallback {
 
 const User: FC<UserProps> = ({ nickname, peerId, onSelected, streaming }) => {
 
+
+    const handleSelection = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        e.preventDefault();
+
+        onSelected({ id: peerId, x: e.clientX, y: e.clientY })
+    }
+
     return (
-        <div className="userlist__user" onClick={e => onSelected({ id: peerId, x: e.clientX, y: e.clientY })}>
+        <div className="userlist__user" onContextMenu={e => handleSelection(e)} >
             <p>
                 { nickname }
             </p>

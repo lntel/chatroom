@@ -3,6 +3,40 @@
 .selection-modal {
     background: $darkest;
     box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
-    padding: 1em;
+    padding: 7px;
     border-radius: .2em;
+    min-width: 230px;
+
+    &__option {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border-radius: .2em;
+        padding: 1em;
+        cursor: pointer;
+        color: $dark;
+        font-weight: 500;
+        transition: all .3s ease-in-out;
+
+        &__icon {
+            display: flex;
+            justify-content: center;
+            margin: 0 7px 0 0;
+        }
+
+        &:hover {
+            background: $dark;
+            color: $light;
+        }
+        
+        &--serious {
+            background: transparent;
+            color: #fc5a5a;
+
+            &:hover {
+                background: #fc5a5a;
+                color: $white;
+            }    
+        }
+    }
 }

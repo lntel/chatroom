@@ -1,0 +1,37 @@
+@import '../../global';
+
+.syntax-modal {
+    display: flex;
+    flex-direction: column;
+
+    select {
+        background: $dark;
+        color: $brand;
+        min-width: 400px;
+        margin: 0 0 1em 0;
+    }
+
+    textarea {
+        border: 0;
+        border-radius: .2em;
+        min-height: 300px;
+        margin: 0 0 1em 0;
+        padding: 1em;
+        color: $brand;
+    }
+
+    &__button {
+        border: 0;
+        border-radius: .2em;
+        padding: 1em;
+        font-weight: 500;
+        background: $brand;
+        color: $white;
+        cursor: pointer;
+        transition: background .3s ease-in-out;
+
+        &:hover {
+            background: darken($brand, 10%);
+        }
+    }
+}
