@@ -6,6 +6,7 @@ import { Client, markdownExpressions } from './types'
 enum ClientEvents {
     setNickname = 'set:nickname',
     sendMessage = 'send:message',
+    sendCode = 'send:code',
     userJoined = 'user:joined',
     userLeft = 'user:left',
     userList = 'user:list',
@@ -139,6 +140,12 @@ class Chat {
 
             if(message.match(/([ -ÿ][\p{Mn}\p{Me}]+)/u) || !message.length) return;
 
+            const codeExp = /^\`{3}([\w]+)?([\w\W\d\D]+)\`{3}$/;
+
+            const codeResult = message.match(codeExp);
+
+            console.log(codeResult)
+
             let markdown;
 
             const markdownExpressions: markdownExpressions = {
@@ -160,6 +167,20 @@ class Chat {
             this.server.emit(ClientEvents.sendMessage, {
                 content: message,
                 markdown: markdown,
+                user: {
+                    nickname: user.nickname,
+                    peerId: user.peerId,
+                    id: user.id
+                },
+                postedDate: new Date(),
+                system: false
+            })
+        });
+
+        client.on(ClientEvents.sendCode, (language: string, code: string) => {
+            this.server.emit(ClientEvents.sendMessage, {
+                content: code,
+                codeLanguage: language,
                 user: {
                     nickname: user.nickname,
                     peerId: user.peerId,

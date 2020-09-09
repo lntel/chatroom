@@ -1,5 +1,7 @@
-import Peer, { MediaConnection } from 'peerjs'
 import React, { useContext, useEffect, useRef, useState } from 'react'
+import './index.scss'
+
+import Peer, { MediaConnection } from 'peerjs'
 import io, { Socket } from 'socket.io-client'
 import Chat from '../../components/Chat'
 import Controls from '../../components/Controls'
@@ -10,11 +12,11 @@ import Textbox from '../../components/Textbox'
 import Userlist from '../../components/Userlist'
 import Videolist from '../../components/Videolist'
 import ReconnectModal from '../../components/ReconnectModal'
-import './index.scss'
 import config from '../../config';
 import { UserStream, ClientEvents, User, ChatMessage } from '../../types'
 import { SettingsContext } from '../../context/SettingsContext'
 import ConnectionModal from '../../components/ConnectionModal'
+import { SocketContext } from '../../context/SocketContext'
 
 const Main = () => {
     const [settingsVisible, setSettingsVisible] = useState<boolean>(false);
@@ -24,12 +26,13 @@ const Main = () => {
     const [reconnectVisible, setReconnectVisible] = useState<boolean>(false);
     const [chatVisible, setChatVisible] = useState<boolean>(false);
     const [muted, setMuted] = useState<boolean>(false);
-    const [socket, setSocket] = useState<typeof Socket | null>(null);
     const [streams, setStreams] = useState<UserStream[]>([]);
     const [users, setUsers] = useState<User[]>([]);
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [nickname, setNickname] = useState<string>('');
     const [localStream, setLocalStream] = useState<MediaStream | null>(null);
+
+    const { socket, setSocket } = useContext(SocketContext);
 
     const peer = useRef<Peer>(new Peer());
 
