@@ -1,14 +1,37 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { FadeIn } from '../Transitions'
 import './index.scss'
 
 interface ModalProps {
+    visible: boolean
     children?: any
     title?: string
-    visible: boolean
+    onUnfocus?: () => void
 }
 
-const Modal: FC<ModalProps> = ({ children, title, visible }) => {
+const Modal: FC<ModalProps> = ({ children, title, visible, onUnfocus }) => {
+
+    useEffect(() => {
+
+        if(onUnfocus) {
+            document.addEventListener('click', handleUnfocus);
+
+            return () => {
+                document.removeEventListener('click', handleUnfocus);
+            }
+        }
+        
+    }, []);
+
+    const handleUnfocus = (e: MouseEvent) => {
+
+        const target = (e.target as HTMLElement);
+
+        if(!target || !target.className || !target.className.length) return;
+
+        if(target.className.substr(0, 15) === 'modal-container') onUnfocus!();
+    }
+
     return (
         <FadeIn state={visible}>
             <div className="modal-container">
