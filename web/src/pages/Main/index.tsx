@@ -28,37 +28,7 @@ const Main = () => {
     const [muted, setMuted] = useState<boolean>(false);
     const [streams, setStreams] = useState<UserStream[]>([]);
     const [users, setUsers] = useState<User[]>([]);
-    const [messages, setMessages] = useState<ChatMessage[]>([
-        {
-            content: `const markdownSwitch = (message: ChatMessage) => {
-                switch(message.markdown) {
-                    case \'italic\':
-                        return (
-                            <i>
-                                { message.content }
-                            </i>
-                        )
-                    case \'bold\':
-                        return (
-                            <b>
-                                { message.content }
-                            </b>
-                        )
-                    default:
-                        return message.content;
-                }
-            }`,
-            codeLanguage: 'javascript',
-            postedDate: new Date(),
-            id: 'testi',
-            system: false,
-            user: {
-                nickname: 'test',
-                streaming: false,
-                peerId: '4382942309'
-            }
-        }
-    ]);
+    const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [nickname, setNickname] = useState<string>('');
     const [localStream, setLocalStream] = useState<MediaStream | null>(null);
 
