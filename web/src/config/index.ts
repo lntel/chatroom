@@ -10,7 +10,7 @@ const production = {
     webSocketURL: 'https://lntelchat.herokuapp.com/'
 };
 
-const config = process.env.REACT_APP_STAGE === 'production' ? production : dev;
+const config = process.env.NODE_ENV === 'production' ? production : dev;
 
 export default {
     ...config
