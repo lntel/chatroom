@@ -129,7 +129,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ visible, onClose }) => {
     }
 
     return (
-        <Modal visible={visible} title="Video/Audio Settings">
+        <Modal visible={visible} title="Video/Audio Settings" onUnfocus={() => onClose()}>
             <div className="settings-modal">
                 <p className="settings-modal__description">
                     Here you can change which device is used by default when broadcasting. We offer customisation for both audio and video.

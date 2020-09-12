@@ -4,6 +4,9 @@ This project is a chatroom created using a MERN stack which utilises modern WebR
 ![Travis (.com)](https://img.shields.io/travis/com/lntel/chatroom)
 ![GitHub](https://img.shields.io/github/license/lntel/chatroom)
 
+## Live Demo
+Please feel free to try our live production [demo](https://chatroom-5au0eh3uv.vercel.app/).
+
 
 ## Contents
 - [Screenshots](#screenshots)

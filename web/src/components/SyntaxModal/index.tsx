@@ -42,7 +42,7 @@ const SyntaxModal: FC<SyntaxModalProps> = ({ visible, onUnfocus }) => {
     }
 
     return (
-        <Modal visible={visible}>
+        <Modal visible={visible} onUnfocus={() => onUnfocus()}>
             <Form className="syntax-modal" onSubmit={(e) => handleSend(e)}>
                 <Dropdown onSelected={lang => setSelectedLang(lang)} options={langs} />
                 <TextArea value={code} onChange={e => setCode(e)} />
