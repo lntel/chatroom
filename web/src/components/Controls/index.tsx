@@ -93,7 +93,9 @@ const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUser
             </button>
             <button className="controls__chat" onClick={() => onChat()}>
                 { !chatVisible ? (
-                    <ChatIcon>Filled</ChatIcon>
+                    <>
+                        <ChatIcon>Filled</ChatIcon>
+                    </>
                 ) : (
                     <ClearIcon>Filled</ClearIcon>
                 ) }
