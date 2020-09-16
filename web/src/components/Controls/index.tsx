@@ -13,6 +13,7 @@ import MicIcon from '@material-ui/icons/Mic';
 import { FadeIn } from '../Transitions';
 import { settingsReducer } from '../../reducers/settings';
 import { SettingsContext } from '../../context/SettingsContext';
+import { ChatMessage } from '../../types';
 
 interface ControlsProps {
     onMicEvent: (e: boolean) => void
@@ -21,13 +22,14 @@ interface ControlsProps {
     onChat: () => void
     onUserlist: () => void
     onSettings: () => void
+    messages: ChatMessage[]
     userlistVisible: boolean
     chatVisible: boolean
     streaming: boolean
     muted: boolean
 }
 
-const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUserlist, userlistVisible, chatVisible, onSettings, streaming, onStreamClose, muted }) => {
+const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUserlist, userlistVisible, chatVisible, onSettings, streaming, onStreamClose, muted, messages }) => {
     //const [muted, setMuted] = useState<boolean>(false);
 
     const {state, dispatch} = useContext(SettingsContext);
@@ -94,6 +96,9 @@ const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUser
             <button className="controls__chat" onClick={() => onChat()}>
                 { !chatVisible ? (
                     <>
+                        <span className="controls__chat__unread">
+                            { messages.filter(message => !message.read).length }
+                        </span>
                         <ChatIcon>Filled</ChatIcon>
                     </>
                 ) : (
