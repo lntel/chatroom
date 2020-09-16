@@ -358,6 +358,18 @@ const Main = () => {
         socket?.emit(ClientEvents.userStreamStop, peer.current.id);
     }
 
+    const handleMessageRead = (messages: ChatMessage[]) => {
+        setMessages(oldMessages => [
+            ...oldMessages.filter(message => !message.read),
+            ...messages.map(message => {
+                return {
+                    ...message,
+                    read: true
+                }
+            })
+        ]);
+    }
+
     return (
         <div className="main-page">
             <Userlist 
@@ -372,6 +384,7 @@ const Main = () => {
             <Chat 
             visible={chatVisible} 
             messages={messages} 
+            onMessageRead={(messages: ChatMessage[]) => handleMessageRead(messages)}
             onMessage={(content: string) => handleMessageSend(content)} 
             />
             <ReconnectModal
@@ -389,6 +402,7 @@ const Main = () => {
             chatVisible={chatVisible}
             streaming={Boolean(localStream)}
             muted={muted}
+            messages={messages}
             />
             <SettingsModal visible={settingsVisible} onClose={() => setSettingsVisible(false)} />
             <Modal title="Please enter a nickname" visible={modalVisible}>
