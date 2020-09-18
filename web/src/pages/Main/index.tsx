@@ -358,15 +358,11 @@ const Main = () => {
         socket?.emit(ClientEvents.userStreamStop, peer.current.id);
     }
 
-    const handleMessageRead = (messages: ChatMessage[]) => {
+    const handleMessageRead = (unreadMessages: ChatMessage[]) => {
+
         setMessages(oldMessages => [
-            ...oldMessages.filter(message => !message.read),
-            ...messages.map(message => {
-                return {
-                    ...message,
-                    read: true
-                }
-            })
+            ...oldMessages.filter(message => message.read),
+            ...unreadMessages
         ]);
     }
 
