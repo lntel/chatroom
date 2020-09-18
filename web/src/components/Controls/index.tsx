@@ -1,4 +1,4 @@
-import React, { FC, useContext, useReducer, useState } from 'react'
+import React, { FC, useContext, useEffect, useReducer, useState } from 'react'
 import './index.scss'
 
 import ScreenShareIcon from '@material-ui/icons/ScreenShare';
@@ -13,6 +13,7 @@ import MicIcon from '@material-ui/icons/Mic';
 import { FadeIn } from '../Transitions';
 import { settingsReducer } from '../../reducers/settings';
 import { SettingsContext } from '../../context/SettingsContext';
+import { ChatMessage } from '../../types';
 
 interface ControlsProps {
     onMicEvent: (e: boolean) => void
@@ -21,14 +22,16 @@ interface ControlsProps {
     onChat: () => void
     onUserlist: () => void
     onSettings: () => void
+    messages: ChatMessage[]
     userlistVisible: boolean
     chatVisible: boolean
     streaming: boolean
     muted: boolean
 }
 
-const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUserlist, userlistVisible, chatVisible, onSettings, streaming, onStreamClose, muted }) => {
+const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUserlist, userlistVisible, chatVisible, onSettings, streaming, onStreamClose, muted, messages }) => {
     //const [muted, setMuted] = useState<boolean>(false);
+    const [unreadMessageCount, setUnreadMessageCount] = useState<number>(0);
 
     const {state, dispatch} = useContext(SettingsContext);
 
@@ -36,6 +39,10 @@ const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUser
 
         onMicEvent(!muted);
     }
+
+    useEffect(() => {
+        setUnreadMessageCount(messages.filter(message => !message.read).length);
+    }, [messages]);
 
     const handleScreenshare = async () => {
 
@@ -93,7 +100,14 @@ const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUser
             </button>
             <button className="controls__chat" onClick={() => onChat()}>
                 { !chatVisible ? (
-                    <ChatIcon>Filled</ChatIcon>
+                    <>
+                        <FadeIn state={Boolean(unreadMessageCount > 0)}>
+                            <span className="controls__chat__unread">
+                                { unreadMessageCount }
+                            </span>
+                        </FadeIn>
+                        <ChatIcon>Filled</ChatIcon>
+                    </>
                 ) : (
                     <ClearIcon>Filled</ClearIcon>
                 ) }
