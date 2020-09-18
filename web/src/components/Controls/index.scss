@@ -103,7 +103,23 @@
     }
     
     &__chat {
+        position: relative;
         background: $brand;
+
+        &__unread {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: rgb(252, 76, 76);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-weight: 600;
+            color: $white;
+        }
 
         &:hover {
             background: darken($brand, 10%);
