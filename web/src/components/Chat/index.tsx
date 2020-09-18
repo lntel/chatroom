@@ -40,25 +40,22 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage, onMessageRead }) =>
 
     useEffect(() => {
         // Auto scroll when messages are recieved
-        chatContainer.current?.scrollTo(0, chatContainer.current?.scrollHeight!)
+        //chatContainer.current?.scrollTo(0, chatContainer.current?.scrollHeight!)
 
         // Filter unread messages
         const unreadMessages = messages.filter(message => !message.read);
 
         if(visible && unreadMessages.length) {
-            onMessageRead(unreadMessages);
+            onMessageRead([...unreadMessages.map(unreadMessage => {
+                return {
+                    ...unreadMessage,
+                    read: true
+                }
+            })]);
         }
 
-    }, [visible]);
+    }, [visible, messages]);
 
-    useEffect(() => {
-
-        const unreadMessages = messages.filter(message => !message.read);
-
-        if(visible) {
-            onMessageRead(unreadMessages);
-        }
-    }, [messages]);
     
     const scrollToChat = () => {
         bottomChat.current?.scrollIntoView({
