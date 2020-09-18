@@ -18,6 +18,7 @@ export interface ChatMessage {
     codeLanguage?: string
     markdown?: 'italic' | 'bold'
     user: User
+    read: Boolean
     postedDate: number | string | Date
 }
 

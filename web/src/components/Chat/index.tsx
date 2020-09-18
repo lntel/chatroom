@@ -19,9 +19,10 @@ interface ChatProps {
     visible: boolean
     messages: ChatMessage[]
     onMessage: (content: string) => void
+    onMessageRead: (messages: ChatMessage[]) => void
 }
 
-const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
+const Chat: FC<ChatProps> = ({ visible, messages, onMessage, onMessageRead }) => {
     const [messageInput, setMessageInput] = useState<string>('');
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [syntaxModal, setSyntaxModal] = useState<boolean>(false);
@@ -38,8 +39,23 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage }) => {
     }, [messages]);
 
     useEffect(() => {
-        chatContainer.current?.scrollTo(0, chatContainer.current?.scrollHeight!)
-    }, [visible]);
+        // Auto scroll when messages are recieved
+        //chatContainer.current?.scrollTo(0, chatContainer.current?.scrollHeight!)
+
+        // Filter unread messages
+        const unreadMessages = messages.filter(message => !message.read);
+
+        if(visible && unreadMessages.length) {
+            onMessageRead([...unreadMessages.map(unreadMessage => {
+                return {
+                    ...unreadMessage,
+                    read: true
+                }
+            })]);
+        }
+
+    }, [visible, messages]);
+
     
     const scrollToChat = () => {
         bottomChat.current?.scrollIntoView({
