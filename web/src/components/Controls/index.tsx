@@ -1,4 +1,4 @@
-import React, { FC, useContext, useReducer, useState } from 'react'
+import React, { FC, useContext, useEffect, useReducer, useState } from 'react'
 import './index.scss'
 
 import ScreenShareIcon from '@material-ui/icons/ScreenShare';
@@ -31,6 +31,7 @@ interface ControlsProps {
 
 const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUserlist, userlistVisible, chatVisible, onSettings, streaming, onStreamClose, muted, messages }) => {
     //const [muted, setMuted] = useState<boolean>(false);
+    const [unreadMessageCount, setUnreadMessageCount] = useState<number>(0);
 
     const {state, dispatch} = useContext(SettingsContext);
 
@@ -38,6 +39,10 @@ const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUser
 
         onMicEvent(!muted);
     }
+
+    useEffect(() => {
+        setUnreadMessageCount(messages.filter(message => !message.read).length);
+    }, [messages]);
 
     const handleScreenshare = async () => {
 
@@ -96,9 +101,11 @@ const Controls: FC<ControlsProps> = ({ onMicEvent, onStreamEvent, onChat, onUser
             <button className="controls__chat" onClick={() => onChat()}>
                 { !chatVisible ? (
                     <>
-                        <span className="controls__chat__unread">
-                            { messages.filter(message => !message.read).length }
-                        </span>
+                        <FadeIn state={Boolean(unreadMessageCount > 0)}>
+                            <span className="controls__chat__unread">
+                                { unreadMessageCount }
+                            </span>
+                        </FadeIn>
                         <ChatIcon>Filled</ChatIcon>
                     </>
                 ) : (
