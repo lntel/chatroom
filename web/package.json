@@ -51,6 +51,6 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/react-syntax-highlighter": "^11.0.5",
     "@types/react-transition-group": "^4.4.0",
-    "@types/socket.io-client": "^1.4.33"
+    "@types/socket.io-client": "^1.4.34"
   }
 }
