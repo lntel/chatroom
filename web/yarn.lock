@@ -9652,10 +9652,10 @@ react-scripts@3.4.3:
   optionalDependencies:
     fsevents "2.1.2"
 
-react-syntax-highlighter@^15.0.1:
-  version "15.0.1"
-  resolved "https://registry.yarnpkg.com/react-syntax-highlighter/-/react-syntax-highlighter-15.0.1.tgz#6b4e325ed6d93d144c8a7a755b9d9b5435c66bd7"
-  integrity sha512-u7urbi8mgFC6kstA35Uh+m7ZCz4g+URdqA8VqvfgVukJWBpOwDbcaRcR60Kk2/384dxgZErBGSahA3ptOOkRWA==
+react-syntax-highlighter@^15.1.0:
+  version "15.1.0"
+  resolved "https://registry.yarnpkg.com/react-syntax-highlighter/-/react-syntax-highlighter-15.1.0.tgz#06f1d6877b1964061da58cb8a547c1c522ce30e7"
+  integrity sha512-+K7PKhXgtL3EJ2jnJEkpZe4dfXWA4OXDODxnQQLl6g4wXY3IpCiL2wy7bPMSiXFMvDtuBmIiHztrMKnEkQnXUQ==
   dependencies:
     "@babel/runtime" "^7.3.1"
     highlight.js "^10.1.1"
