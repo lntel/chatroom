@@ -65,6 +65,9 @@ const Chat: FC<ChatProps> = ({ visible, messages, onMessage, onMessageRead }) =>
 
 
     const handleMessageSend = () => {
+
+        if(messageInput.length >= 250) return;
+
         onMessage(messageInput);
     }
     
